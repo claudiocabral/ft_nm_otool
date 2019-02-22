@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:12:11 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/22 19:05:27 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/22 19:08:21 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	print(const t_nlist_64 *list, const char *string_table)
 
 	type_table = "UTA3456789Ibudef";
 	type = list->n_type & N_TYPE;
-	if (type == N_SECT)
+	// if (type == N_SECT)
 		printf("%016llx %c %s\n", list->n_value,
 				type_table[list->n_type & N_TYPE],
 				string_table + list->n_un.n_strx);
