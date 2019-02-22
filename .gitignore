@@ -1,0 +1,13 @@
+ft_nm
+ft_otool
+*.o
+*.a
+.deps
+*.dSYM
+fuzz
+fuzz_log
+crash*
+leak*
+.42sh_history
+globbing/globbing
+42sh
