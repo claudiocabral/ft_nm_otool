@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 13:44:00 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 17:45:58 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/23 19:23:29 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,11 @@ uint32_t	big_to_little_endian(uint32_t val)
 			| (((val) & 0xff0000) >> 8)
 			| (((val) & 0xff00) << 8)
 			| (((val) & 0xff) << 24));
+}
+
+uint32_t	endianless(int is_big_endian, uint32_t val)
+{
+	if (is_big_endian)
+		return big_to_little_endian(val);
+	return (val);
 }

@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 13:09:16 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 14:30:06 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/23 19:33:47 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,17 @@ void	ft_swap(void const **a, void const **b)
 	*b = tmp;
 }
 
-int		nlist_64_compare(const t_nlist_64 *a, const t_nlist_64 *b, const char *string_table)
+int		nlist_compare(const t_nlist_64 *a, const t_nlist_64 *b,
+		t_abstract_mach *header)
 {
+	uint32_t	a_offset;
+	uint32_t	b_offset;
+
+	a_offset = endianless(header->big_endian, a->n_un.n_strx);
+	b_offset = endianless(header->big_endian, b->n_un.n_strx);
 	return (ft_strcmp(
-				string_table + a->n_un.n_strx,
-				string_table + b->n_un.n_strx
+				header->string_table + a_offset,
+				header->string_table + b_offset
 			));
 }
 

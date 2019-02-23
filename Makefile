@@ -29,8 +29,10 @@ POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.dep && touch $@
 OBJS_NM		=	objs/nm/main.o
 OBJS_OTOOLS	=	objs/binary_library/map_file.o
 OBJS_LIB	=	objs/binary_library/map_file.o\
-				objs/binary_library/parse64.o\
-				objs/binary_library/parse32.o\
+				objs/binary_library/mach_o.o\
+				objs/binary_library/fat.o\
+				objs/binary_library/segments.o\
+				objs/binary_library/print.o\
 				objs/binary_library/sort.o\
 				objs/binary_library/utils.o\
 				objs/binary_library/choose_type.o
