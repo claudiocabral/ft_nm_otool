@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:12:11 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 16:52:49 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/23 17:37:21 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	print_symtab_command(const t_symtab_command *symbol_table,
 		print64(list[i], string_table, text_section);
 		++i;
 	}
+	free(list);
 }
 
 uint32_t	print_segment(const t_segment_command_64 *segment)
