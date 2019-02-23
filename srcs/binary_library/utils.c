@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   choose_type.c                                      :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/22 16:11:30 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 14:05:51 by ccabral          ###   ########.fr       */
+/*   Created: 2019/02/23 13:44:00 by ccabral           #+#    #+#             */
+/*   Updated: 2019/02/23 13:44:43 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
 
-void	choose_type(const void *ptr, size_t size)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	uint32_t	magic_number;
-
-	if (!ptr)
-		return ;
-	magic_number = *(int *)ptr;
-	if (magic_number == MH_MAGIC_64)
-		parse64(ptr, (size_t)ptr + size);
-	else if (magic_number == MH_MAGIC)
-		parse32(ptr);
+	while (*s1 && *s1 == *s2)
+	{
+		++s1;
+		++s2;
+	}
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }

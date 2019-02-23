@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 17:07:21 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 13:34:47 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/23 14:23:08 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	nm(const char *filename)
 
 	if (!(map_file(filename, &file)))
 		return (1);
-	choose_type(file.ptr);
+	choose_type(file.ptr, file.size);
 	munmap((void *)file.ptr, file.size);
 	return (0);
 }
@@ -29,7 +29,7 @@ int	nm_error_no_file(void)
 {
 	write(STDERR_FILENO,
 			"error: ft_nm: at least one file must be specified\n",
-			sizeof("error: ft_otool: at least one file must be specified\n"));
+			50);
 	return (1);
 }
 

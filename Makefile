@@ -29,9 +29,11 @@ POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.dep && touch $@
 OBJS_NM		=	objs/nm/main.o
 OBJS_OTOOLS	=	objs/binary_library/map_file.o
 OBJS_LIB	=	objs/binary_library/map_file.o\
-			objs/binary_library/parse64.o\
-			objs/binary_library/parse32.o\
-			objs/binary_library/choose_type.o
+				objs/binary_library/parse64.o\
+				objs/binary_library/parse32.o\
+				objs/binary_library/sort.o\
+				objs/binary_library/utils.o\
+				objs/binary_library/choose_type.o
 
 INC	=	-Iincludes
 
@@ -53,7 +55,7 @@ all: $(NAME) $(NAME_LIB)
 $(NAME_LIB): $(OBJS_LIB)
 	ar rcs $@ $^
 
-$(NAME): $(OBJS_NM) $(NAME_LIB)
+$(NAME): $(OBJS_NM) $(NAME_LIB) $(OBJS_LIB)
 	$(CC) $(CFLAGS) $(OBJS_NM) $(INC) -o $@ $(NAME_LIB)
 
 objs/%.o: srcs/%.c $(DEPDIR)/%.dep Makefile
