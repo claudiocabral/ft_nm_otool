@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:11:30 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 19:21:18 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/23 19:58:51 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,12 @@ void	choose_type(const void *ptr, size_t size)
 	magic_number = *(int *)ptr;
 	if (magic_number == FAT_CIGAM)
 	{
-		fat(ptr, size);
+		fat(ptr, size, 1);
+		return ;
+	}
+	else if (magic_number == FAT_MAGIC)
+	{
+		fat(ptr, size, 0);
 		return ;
 	}
 	header.big_endian = 0;

@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:12:11 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 19:48:47 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/23 20:02:55 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,15 @@ void	parse(t_abstract_mach *header)
 	i = 0;
 	while (i < number_of_commands)
 	{
-		if (load->cmd == LC_SYMTAB)
+		if (load->cmd == endianless(header->big_endian, LC_SYMTAB))
 		{
 			print_symtab_command((const t_symtab_command *)load,
 					header, 0);
 			break ;
 		}
-		load = (void *) load + load->cmdsize;
-		if ((uint64_t)load > header->eof - (sizeof(t_load_command)))
+		load = (void *) load + endianless(header->big_endian, load->cmdsize);
+		if (!is_in_file(load, sizeof(t_load_command), header->file,
+												header->file_size))
 			break ;
 		++i;
 	}

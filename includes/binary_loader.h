@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 13:41:29 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 19:33:42 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/23 19:56:59 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct	s_file
 	size_t			size;
 }				t_file;
 
-void			fat(const void *file, size_t size);
+int				fat(const void *file, size_t size, int is_big_endian);
 int				map_file(char const *path, t_file *file);
 void			parse(t_abstract_mach *header);
 void			choose_type(const void *ptr, size_t size);
@@ -74,5 +74,7 @@ int				nlist_compare(const t_nlist_64 *a, const t_nlist_64 *b,
 											t_abstract_mach *header);
 uint32_t		big_to_little_endian(uint32_t val);
 uint32_t		endianless(int is_endian, uint32_t val);
+int				is_in_file(const void *ptr, size_t size,
+						const void *file, size_t file_size);
 
 #endif
