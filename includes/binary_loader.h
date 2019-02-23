@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 13:41:29 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 19:56:59 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/23 20:12:48 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ void			ft_quicksort(void const **array, int low, int high,
 int				ft_strcmp(const char *s1, const char *s2);
 void			print(const t_nlist_64 *list, t_abstract_mach *header,
 						const char *string_table, uint32_t text_section);
-uint32_t		get_text_section(t_segment_command_64 *load,
-						uint32_t number_of_commands, size_t max);
+uint32_t		get_text_section(t_load_command *load,
+					uint32_t number_of_commands, t_abstract_mach *header);
 int				nlist_compare(const t_nlist_64 *a, const t_nlist_64 *b,
 											t_abstract_mach *header);
 uint32_t		big_to_little_endian(uint32_t val);
