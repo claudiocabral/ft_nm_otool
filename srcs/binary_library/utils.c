@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 13:44:00 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 13:44:43 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/23 17:45:58 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,12 @@ int	ft_strcmp(const char *s1, const char *s2)
 		++s2;
 	}
 	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+}
+
+uint32_t	big_to_little_endian(uint32_t val)
+{
+	return ((((val) & 0xff000000) >> 24)
+			| (((val) & 0xff0000) >> 8)
+			| (((val) & 0xff00) << 8)
+			| (((val) & 0xff) << 24));
 }
