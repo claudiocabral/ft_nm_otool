@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 13:41:29 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 14:29:26 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/23 17:49:06 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,41 @@
 # include <stdio.h>
 
 typedef struct stat t_stat;
+typedef struct mach_header t_mach_header;
 typedef struct mach_header_64 t_mach_header_64;
+typedef struct segment_command t_segment_command;
+typedef struct segment_command_64 t_segment_command_64;
+typedef struct section t_section;
+typedef struct section_64 t_section_64;
 typedef struct load_command t_load_command;
 typedef struct symtab_command t_symtab_command;
-typedef struct segment_command_64 t_segment_command_64;
+typedef struct nlist_64 t_nlist_64;
 typedef struct nlist_64 t_nlist_64;
 typedef int		(*t_cmpf)(void const *, void const *, void const *);
+
+typedef struct	s_absctract_mach
+{
+	uint64_t	file_size;
+	uint64_t	header_size;
+	uint64_t	segment_size;
+	uint64_t	section_size;
+	void		*file;
+	union
+	{
+		t_mach_header		*arch_32;
+		t_mach_header_64	*arch_64;
+	}			header;
+	union
+	{
+		t_section		*arch_32;
+		t_section_64	*arch_64;
+	}			section;
+	union
+	{
+		t_segment_command	*arch_32;
+		t_segment_command_64	*arch_64;
+	}			segment;
+}				t_abstract_mach;
 
 typedef struct	s_file
 {
