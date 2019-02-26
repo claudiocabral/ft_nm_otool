@@ -13,7 +13,8 @@
 
 NAME	:=	ft_nm
 NAME_OTOOL :=	ft_otool
-NAME_LIB := libbinary_utils.a
+LIB := binary_utils
+NAME_LIB := lib$(LIB).a
 ifeq (CC,)
 CC		:= cc
 endif
@@ -54,11 +55,12 @@ OS = $(shell uname -s)
 
 all: $(NAME) $(NAME_LIB)
 
-$(NAME_LIB): $(OBJS_LIB)
-	ar rcs $@ $^
 
 $(NAME): $(OBJS_NM) $(NAME_LIB) $(OBJS_LIB)
-	$(CC) $(CFLAGS) $(OBJS_NM) $(INC) -o $@ $(NAME_LIB)
+	$(CC) $(CFLAGS) $(OBJS_NM) $(INC) -L. -l$(LIB) -o $@
+
+$(NAME_LIB): $(OBJS_LIB)
+	ar rcs $@ $^
 
 objs/%.o: srcs/%.c $(DEPDIR)/%.dep Makefile
 	$(eval DIR := $(dir $@))
@@ -71,7 +73,9 @@ objs/%.o: srcs/%.c $(DEPDIR)/%.dep Makefile
 $(DEPDIR)/%.dep: ;
 .PRECIOUS: $(DEPDIR)/%.dep
 
-include $(wildcard $(OBJS:objs/%.o=$(DEPDIR)/%.dep))
+include $(wildcard $(OBJS_NM:objs/%.o=$(DEPDIR)/%.dep))
+include $(wildcard $(OBJS_LIB:objs/%.o=$(DEPDIR)/%.dep))
+include $(wildcard $(OBJS_OTOOLS:objs/%.o=$(DEPDIR)/%.dep))
 
 fclean: clean
 ifeq ($(shell [ -e $(NAME) ] && echo 1 || echo 0),1)
