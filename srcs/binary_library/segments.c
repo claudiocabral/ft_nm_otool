@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:00:57 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 20:20:42 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/26 11:47:16 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ uint32_t	print_segment(const t_segment_command_64 *segment)
 	return (0);
 }
 
-uint32_t	get_number_of_sections(t_load_command *load,
+uint32_t	get_number_of_sections(const t_load_command *load,
 				uint32_t number_of_commands, t_abstract_mach *header)
 {
 	uint32_t					i;
@@ -42,36 +42,70 @@ uint32_t	get_number_of_sections(t_load_command *load,
 		cmd = endianless(header->big_endian, load->cmd);
 		if (cmd == LC_SEGMENT_64)
 			total += endianless(header->big_endian, ((t_segment_command_64 *)load)->nsects);
-		if (cmd == LC_SEGMENT)
+		else if (cmd == LC_SEGMENT)
 			total += endianless(header->big_endian, ((t_segment_command *)load)->nsects);
 		load = (void *) load + endianless(header->big_endian, load->cmdsize);
 		if (!is_in_file(load, sizeof(t_load_command),
-					header->file, header->file_size))
-			break ;
+					header->file, header->file_size)
+				|| !is_in_file(load, load->cmdsize, header->file, header->file_size))
+			return (total);
 		++i;
 	}
 	return (total);
 }
 
-uint32_t	get_text_section(t_load_command *load,
-				uint32_t number_of_commands, t_abstract_mach *header)
+void		collect_sections(uint32_t *section_index, const t_load_command *cmd,
+								t_abstract_mach *header, uint32_t total_sects)
 {
 	uint32_t					i;
-	uint32_t					total;
+	uint32_t					n_sects;
 
 	i = 0;
-	total = 0;
+	if (header->segment_size == sizeof(t_segment_command_64))
+		n_sects = ((t_segment_command_64 *)cmd)->nsects;
+	else
+		n_sects = ((t_segment_command *)cmd)->nsects;
+	cmd = (const void *)cmd + header->segment_size;
+	while (i < n_sects)
+	{
+		if (*section_index >= total_sects)
+			return ;
+		if (!is_in_file(cmd, header->section_size,
+					header->file, header->file_size))
+			return ;
+		header->sections.arch_64[*section_index] = (t_section_64 *)cmd;
+		*section_index += 1;
+		++i;
+		cmd = (const void *)cmd + header->section_size;
+	}
+}
+
+int			build_section_table(t_abstract_mach *header,
+				const t_load_command *load, uint32_t number_of_commands)
+{
+	uint32_t					i;
+	uint32_t					section_index;
+	uint32_t					total;
+	uint32_t					cmd;
+
+	if (!(total = get_number_of_sections(load, number_of_commands, header))
+		|| !(header->sections.arch_64
+				= (t_section_64 **)malloc((total + 1) *sizeof(t_section_64 *))))
+		return (0);
+	i = 0;
+	section_index = 1;
 	while (i < number_of_commands)
 	{
-		if (endianless(header->big_endian, load->cmd) == LC_SEGMENT_64)
-		{
-			print_segment((t_segment_command_64 *)load);
-		}
+		cmd = endianless(header->big_endian, load->cmd);
+		if (cmd == LC_SEGMENT_64 || cmd == LC_SEGMENT)
+			collect_sections(&section_index, load, header, total);
 		load = (void *) load + endianless(header->big_endian, load->cmdsize);
 		if (!is_in_file(load, sizeof(t_load_command),
+					header->file, header->file_size)
+				|| !is_in_file(load, endianless(header->big_endian, load->cmdsize),
 					header->file, header->file_size))
-			break ;
+			return (1);
 		++i;
 	}
-	return (0);
+	return (1);
 }

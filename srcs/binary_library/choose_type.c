@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:11:30 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 19:58:51 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/26 10:31:47 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,24 @@ void	mach_set_64(t_abstract_mach *header)
 	header->section_size = sizeof(t_section_64);
 }
 
-void	choose_type(const void *ptr, size_t size)
+t_abstract_mach	choose_type(const void *ptr, size_t size)
 {
 	uint32_t		magic_number;
 	t_abstract_mach	header;
 
+	header.file = NULL;
 	if (!ptr)
-		return ;
+		return (header);
 	magic_number = *(int *)ptr;
 	if (magic_number == FAT_CIGAM)
 	{
 		fat(ptr, size, 1);
-		return ;
+		return (header);
 	}
 	else if (magic_number == FAT_MAGIC)
 	{
 		fat(ptr, size, 0);
-		return ;
+		return (header);
 	}
 	header.big_endian = 0;
 	header.file = ptr;
@@ -68,4 +69,5 @@ void	choose_type(const void *ptr, size_t size)
 		header.big_endian = 1;
 	}
 	parse(&header);
+	return (header);
 }

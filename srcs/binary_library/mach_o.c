@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:12:11 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 20:02:55 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/26 11:55:35 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	print_symtab_command(const t_symtab_command *symbol_table,
 		symbols = (void *)symbols + header->nlist_size;
 		++i;
 	}
-	ft_quicksort((const void **)list, 1,
+	ft_quicksort((const void **)list, 0,
 			number_of_symbols - 1, header, (t_cmpf)nlist_compare);
 	i = 0;
 	while (i < number_of_symbols)
@@ -53,10 +53,8 @@ void	parse(t_abstract_mach *header)
 {
 	uint32_t				i;
 	const t_load_command	*load;
-	uint32_t				text_section;
 	uint64_t				number_of_commands;
 
-	(void)text_section;
 	if (!header)
 		return ;
 	load = header->file + header->header_size;
@@ -66,7 +64,8 @@ void	parse(t_abstract_mach *header)
 	else
 		number_of_commands =
 			endianless(header->big_endian, header->header.arch_32->ncmds);
-	//text_section = get_text_section((void *)load, number_of_commands, header->eof);
+	if (!(build_section_table(header, load, number_of_commands)))
+		return ;
 	i = 0;
 	while (i < number_of_commands)
 	{

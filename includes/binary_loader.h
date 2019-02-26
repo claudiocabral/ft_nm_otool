@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 13:41:29 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 20:12:48 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/26 11:01:11 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ typedef struct	s_absctract_mach
 	}			segment;
 	union
 	{
-		t_section		*arch_32;
-		t_section_64	*arch_64;
-	}			section;
+		t_section		**arch_32;
+		t_section_64	**arch_64;
+	}			sections;
 	union
 	{
 		t_nlist		*arch_32;
@@ -62,7 +62,7 @@ typedef struct	s_file
 int				fat(const void *file, size_t size, int is_big_endian);
 int				map_file(char const *path, t_file *file);
 void			parse(t_abstract_mach *header);
-void			choose_type(const void *ptr, size_t size);
+t_abstract_mach	choose_type(const void *ptr, size_t size);
 void			ft_quicksort(void const **array, int low, int high,
 									const void *data, t_cmpf cmpf);
 int				ft_strcmp(const char *s1, const char *s2);
@@ -76,5 +76,8 @@ uint32_t		big_to_little_endian(uint32_t val);
 uint32_t		endianless(int is_endian, uint32_t val);
 int				is_in_file(const void *ptr, size_t size,
 						const void *file, size_t file_size);
+int				build_section_table(t_abstract_mach *header,
+					const t_load_command *load, uint32_t number_of_commands);
+char	get_type_symbol(const t_nlist_64 *list, t_abstract_mach *header);
 
 #endif
