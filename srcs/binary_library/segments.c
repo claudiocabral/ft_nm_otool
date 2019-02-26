@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:00:57 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/26 11:47:16 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/26 13:28:56 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ uint32_t	get_number_of_sections(const t_load_command *load,
 		load = (void *) load + endianless(header->big_endian, load->cmdsize);
 		if (!is_in_file(load, sizeof(t_load_command),
 					header->file, header->file_size)
-				|| !is_in_file(load, load->cmdsize, header->file, header->file_size))
+				|| !is_in_file(load,
+					endianless(header->big_endian, load->cmdsize), header->file, header->file_size))
 			return (total);
 		++i;
 	}
@@ -62,13 +63,14 @@ void		collect_sections(uint32_t *section_index, const t_load_command *cmd,
 
 	i = 0;
 	if (header->segment_size == sizeof(t_segment_command_64))
-		n_sects = ((t_segment_command_64 *)cmd)->nsects;
+		n_sects = endianless(header->big_endian,
+				((t_segment_command_64 *)cmd)->nsects);
 	else
-		n_sects = ((t_segment_command *)cmd)->nsects;
+		n_sects = endianless(header->big_endian, ((t_segment_command *)cmd)->nsects);
 	cmd = (const void *)cmd + header->segment_size;
 	while (i < n_sects)
 	{
-		if (*section_index >= total_sects)
+		if (*section_index > total_sects)
 			return ;
 		if (!is_in_file(cmd, header->section_size,
 					header->file, header->file_size))
@@ -96,15 +98,15 @@ int			build_section_table(t_abstract_mach *header,
 	section_index = 1;
 	while (i < number_of_commands)
 	{
-		cmd = endianless(header->big_endian, load->cmd);
-		if (cmd == LC_SEGMENT_64 || cmd == LC_SEGMENT)
-			collect_sections(&section_index, load, header, total);
-		load = (void *) load + endianless(header->big_endian, load->cmdsize);
 		if (!is_in_file(load, sizeof(t_load_command),
 					header->file, header->file_size)
 				|| !is_in_file(load, endianless(header->big_endian, load->cmdsize),
 					header->file, header->file_size))
 			return (1);
+		cmd = endianless(header->big_endian, load->cmd);
+		if (cmd == LC_SEGMENT_64 || cmd == LC_SEGMENT)
+			collect_sections(&section_index, load, header, total);
+		load = (void *) load + endianless(header->big_endian, load->cmdsize);
 		++i;
 	}
 	return (1);

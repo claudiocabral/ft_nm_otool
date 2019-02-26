@@ -6,14 +6,14 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:20:30 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/26 11:20:32 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/26 13:14:53 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
 
 void	print32(const t_nlist *list, t_abstract_mach *header,
-		const char *string_table, uint32_t text_section)
+		const char *string_table)
 {
 	char		type;
 	uint32_t	offset;
@@ -25,16 +25,11 @@ void	print32(const t_nlist *list, t_abstract_mach *header,
 		return ;
 	if (!string_table[offset])
 		return ;
-	if (type == N_UNDF)
+	if (type == 'U' || type == 'u')
 		printf("         %c %s\n",
 				type,
 				string_table + offset);
-	else if (type != N_SECT)
-		printf("%08x %c %s\n",
-				endianless(header->big_endian, list->n_value),
-				type,
-				string_table + offset);
-	else if(list->n_sect == text_section)
+	else
 		printf("%08x %c %s\n",
 				endianless(header->big_endian, list->n_value),
 				type,
@@ -65,11 +60,11 @@ void	print64(const t_nlist_64 *list, t_abstract_mach *header,
 }
 
 void	print(const t_nlist_64 *list, t_abstract_mach *header,
-		const char *string_table, uint32_t text_section)
+		const char *string_table)
 {
 
 	if (header->nlist_size == sizeof(t_nlist))
-		print32((t_nlist *)list, header, string_table, text_section);
+		print32((t_nlist *)list, header, string_table);
 	else
 		print64(list, header, string_table);
 }

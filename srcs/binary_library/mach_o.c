@@ -6,14 +6,14 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:12:11 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/26 11:55:35 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/26 13:15:16 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
 
 void	print_symtab_command(const t_symtab_command *symbol_table,
-				t_abstract_mach *header, uint32_t text_section)
+				t_abstract_mach *header)
 {
 	const t_nlist_64	*symbols;
 	t_nlist_64 const	**list;
@@ -43,7 +43,7 @@ void	print_symtab_command(const t_symtab_command *symbol_table,
 	i = 0;
 	while (i < number_of_symbols)
 	{
-		print(list[i], header, header->string_table, text_section);
+		print(list[i], header, header->string_table);
 		++i;
 	}
 	free(list);
@@ -72,7 +72,7 @@ void	parse(t_abstract_mach *header)
 		if (load->cmd == endianless(header->big_endian, LC_SYMTAB))
 		{
 			print_symtab_command((const t_symtab_command *)load,
-					header, 0);
+					header);
 			break ;
 		}
 		load = (void *) load + endianless(header->big_endian, load->cmdsize);

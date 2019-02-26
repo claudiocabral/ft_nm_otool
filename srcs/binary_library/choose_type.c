@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:11:30 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/26 12:00:48 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/26 13:04:21 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	mach_set_64(t_abstract_mach *header)
 	header->section_size = sizeof(t_section_64);
 }
 
-t_abstract_mach	choose_type(const void *ptr, size_t size)
+t_abstract_mach	choose_type(const void *ptr, size_t size, const char *filename)
 {
 	uint32_t		magic_number;
 	t_abstract_mach	header;
@@ -51,12 +51,12 @@ t_abstract_mach	choose_type(const void *ptr, size_t size)
 	magic_number = *(int *)ptr;
 	if (magic_number == FAT_CIGAM)
 	{
-		fat(ptr, size, 1);
+		fat(ptr, size, filename, 1);
 		return (header);
 	}
 	else if (magic_number == FAT_MAGIC)
 	{
-		fat(ptr, size, 0);
+		fat(ptr, size, filename, 0);
 		return (header);
 	}
 	else if (magic_number == MH_MAGIC_64)

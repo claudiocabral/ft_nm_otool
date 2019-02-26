@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 13:41:29 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/26 11:01:11 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/26 13:15:05 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,16 @@ typedef struct	s_file
 	size_t			size;
 }				t_file;
 
-int				fat(const void *file, size_t size, int is_big_endian);
+int				fat(const void *file, size_t size,
+					const char *filename, int is_big_endian);
 int				map_file(char const *path, t_file *file);
 void			parse(t_abstract_mach *header);
-t_abstract_mach	choose_type(const void *ptr, size_t size);
+t_abstract_mach	choose_type(const void *ptr, size_t size, const char *filename);
 void			ft_quicksort(void const **array, int low, int high,
 									const void *data, t_cmpf cmpf);
 int				ft_strcmp(const char *s1, const char *s2);
 void			print(const t_nlist_64 *list, t_abstract_mach *header,
-						const char *string_table, uint32_t text_section);
+						const char *string_table);
 uint32_t		get_text_section(t_load_command *load,
 					uint32_t number_of_commands, t_abstract_mach *header);
 int				nlist_compare(const t_nlist_64 *a, const t_nlist_64 *b,

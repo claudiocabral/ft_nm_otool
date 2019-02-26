@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 17:07:21 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/26 10:43:30 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/26 13:35:17 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	nm(const char *filename)
 
 	if (!(map_file(filename, &file)))
 		return (1);
-	choose_type(file.ptr, file.size);
+	choose_type(file.ptr, file.size, filename);
 	munmap((void *)file.ptr, file.size);
 	return (0);
 }
