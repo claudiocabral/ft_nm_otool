@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:11:30 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/26 10:31:47 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/26 12:00:48 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ t_abstract_mach	choose_type(const void *ptr, size_t size)
 	header.file = NULL;
 	if (!ptr)
 		return (header);
+	header.big_endian = 0;
+	header.file = ptr;
+	header.file_size = size;
+	header.eof = (uint64_t)ptr + size;
 	magic_number = *(int *)ptr;
 	if (magic_number == FAT_CIGAM)
 	{
@@ -55,11 +59,7 @@ t_abstract_mach	choose_type(const void *ptr, size_t size)
 		fat(ptr, size, 0);
 		return (header);
 	}
-	header.big_endian = 0;
-	header.file = ptr;
-	header.file_size = size;
-	header.eof = (uint64_t)ptr + size;
-	if (magic_number == MH_MAGIC_64)
+	else if (magic_number == MH_MAGIC_64)
 		mach_set_64(&header);
 	else if (magic_number == MH_MAGIC)
 		mach_set_32(&header);
@@ -68,6 +68,8 @@ t_abstract_mach	choose_type(const void *ptr, size_t size)
 		mach_set_32(&header);
 		header.big_endian = 1;
 	}
+	else
+		return (header);
 	parse(&header);
 	return (header);
 }
