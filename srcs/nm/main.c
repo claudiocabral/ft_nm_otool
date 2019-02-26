@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 17:07:21 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 14:23:08 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/26 10:43:30 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int argc, char	**argv)
 	i = 1;
 	res = 0;
 	if (argc == 1)
-		return (nm_error_no_file());
+		return (nm("./a.out"));
 	while (i < argc)
 	{
 		tmp = nm(argv[i]);
