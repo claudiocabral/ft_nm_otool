@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 17:07:21 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 11:04:30 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 12:04:42 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
-int		nm_body(t_file file, int is_big_endian, t_fat_arch *arch)
+static int	nm_body(t_file file, int is_big_endian, const t_fat_arch *arch)
 {
 	t_abstract_mach	header;
 
@@ -30,12 +30,12 @@ int		nm_body(t_file file, int is_big_endian, t_fat_arch *arch)
 	return (parse(&header));
 }
 
-int	nm(const char *filename)
+int			nm(const char *filename)
 {
-	return (apply_to_file(filename, (t_func)nm_body));
+	return (apply_to_file(filename, nm_body));
 }
 
-int	nm_error_no_file(void)
+int			nm_error_no_file(void)
 {
 	write(STDERR_FILENO,
 			"error: ft_nm: at least one file must be specified\n",
@@ -43,7 +43,7 @@ int	nm_error_no_file(void)
 	return (1);
 }
 
-int	main(int argc, char	**argv)
+int			main(int argc, char	**argv)
 {
 	int	i;
 	int	tmp;

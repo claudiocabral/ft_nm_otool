@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:12:11 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 11:00:36 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 12:08:02 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		parse(t_abstract_mach *header)
 	while (i < number_of_commands)
 	{
 		if (!is_in_file(load, sizeof(t_load_command), header->file))
-			return (0);
+			break ;
 		if (load->cmd == endianless(header->big_endian, LC_SYMTAB))
 		{
 			print_symtab_command((const t_symtab_command *)load,
@@ -80,5 +80,6 @@ int		parse(t_abstract_mach *header)
 		load = (void *) load + endianless(header->big_endian, load->cmdsize);
 		++i;
 	}
+	free(header->sections.arch_64);
 	return (1);
 }

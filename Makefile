@@ -28,13 +28,14 @@ DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.dep && touch $@
 
 OBJS_NM		=	objs/nm/main.o
-OBJS_OTOOLS	=	objs/binary_library/map_file.o
+OBJS_OTOOL	=	objs/otool/main.o
 OBJS_LIB	=	objs/binary_library/map_file.o\
 				objs/binary_library/mach_o.o\
 				objs/binary_library/fat.o\
 				objs/binary_library/apply.o\
 				objs/binary_library/get_type.o\
 				objs/binary_library/segments.o\
+				objs/binary_library/section.o\
 				objs/binary_library/print.o\
 				objs/binary_library/sort.o\
 				objs/binary_library/utils.o\
@@ -55,11 +56,14 @@ OS = $(shell uname -s)
 
 .PHONY: all clean fclean re
 
-all: $(NAME) $(NAME_LIB)
+all: $(NAME) $(NAME_OTOOL) $(NAME_LIB)
 
 
-$(NAME): $(OBJS_NM) $(NAME_LIB) $(OBJS_LIB)
+$(NAME): $(OBJS_NM) $(NAME_LIB)
 	$(CC) $(CFLAGS) $(OBJS_NM) $(INC) -L. -l$(LIB) -o $@
+
+$(NAME_OTOOL): $(OBJS_OTOOL) $(NAME_LIB)
+	$(CC) $(CFLAGS) $(OBJS_OTOOL) $(INC) -L. -l$(LIB) -o $@
 
 $(NAME_LIB): $(OBJS_LIB)
 	ar rcs $@ $^
@@ -77,7 +81,7 @@ $(DEPDIR)/%.dep: ;
 
 include $(wildcard $(OBJS_NM:objs/%.o=$(DEPDIR)/%.dep))
 include $(wildcard $(OBJS_LIB:objs/%.o=$(DEPDIR)/%.dep))
-include $(wildcard $(OBJS_OTOOLS:objs/%.o=$(DEPDIR)/%.dep))
+include $(wildcard $(OBJS_OTOOL:objs/%.o=$(DEPDIR)/%.dep))
 
 fclean: clean
 ifeq ($(shell [ -e $(NAME) ] && echo 1 || echo 0),1)

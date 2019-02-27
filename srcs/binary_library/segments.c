@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:00:57 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 10:31:34 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 12:13:57 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,13 @@ int			build_section_table(t_abstract_mach *header,
 {
 	uint32_t					i;
 	uint32_t					section_index;
-	uint32_t					total;
 	uint32_t					cmd;
 
-	if (!(total = get_number_of_sections(load, number_of_commands, header))
+	if (!(header->number_of_sections
+				= get_number_of_sections(load, number_of_commands, header))
 		|| !(header->sections.arch_64
-				= (t_section_64 **)malloc((total + 1) *sizeof(t_section_64 *))))
+				= (t_section_64 **)malloc((header->number_of_sections + 1)
+					* sizeof(t_section_64 *))))
 		return (0);
 	i = 0;
 	section_index = 1;
@@ -104,7 +105,8 @@ int			build_section_table(t_abstract_mach *header,
 			return (1);
 		cmd = endianless(header->big_endian, load->cmd);
 		if (cmd == LC_SEGMENT_64 || cmd == LC_SEGMENT)
-			collect_sections(&section_index, load, header, total);
+			collect_sections(&section_index, load, header,
+					header->number_of_sections);
 		load = (void *) load + endianless(header->big_endian, load->cmdsize);
 		++i;
 	}
