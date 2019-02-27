@@ -6,32 +6,55 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 13:04:09 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 13:44:45 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:14:44 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
 
-void	ft_print_addr(long c)
+int		hexdump_32_packed(const char *buffer, uint32_t size, uint32_t address)
 {
-	char	*hex;
-	long	val;
-	long	tmp;
+	int			i = 0;
+	uint32_t	offset = 0;
 
-	hex = "0123456789abcdef";
-	val = 0x1;
-	tmp = c / 0x10;
-	while (tmp || val < 0x10000000)
+	(void)buffer;
+	while (offset < size)
 	{
-		tmp /= 0x10;
-		val *= 0x10;
+		printf("%08x\t", offset + address);
+		i = 0;
+		while (i < 16 && offset + i < size)
+		{
+			ft_puthex(buffer[offset + i]);
+			if (!((i + 1) % 4))
+				printf(" ");
+			++i;
+		}
+		printf("\n");
+		offset += i;
 	}
-	while (val)
+	return (1);
+}
+
+int		hexdump_32(const char *buffer, uint32_t size, uint32_t address)
+{
+	int			i = 0;
+	uint32_t	offset = 0;
+
+	(void)buffer;
+	while (offset < size)
 	{
-		printf("%c", hex[c / val]);
-		c %= val;
-		val /= 0x10;
+		printf("%08x\t", offset + address);
+		i = 0;
+		while (i < 16 && offset + i < size)
+		{
+			ft_puthex(buffer[offset + i]);
+			printf(" ");
+			++i;
+		}
+		printf("\n");
+		offset += i;
 	}
+	return (1);
 }
 
 int		hexdump(const char *buffer, uint64_t size, uint64_t address)

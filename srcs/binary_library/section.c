@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 12:06:17 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 13:59:38 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:16:23 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,21 @@
 
 int	print_section_32(t_abstract_mach *header, int i)
 {
-	t_section_64	*section;
+	t_section	*section;
 
-	section = header->sections.arch_64[i];
+	section = header->sections.arch_32[i];
 	printf("Contents of (%s,%s) section\n", section->segname,
 			section->sectname);
+	if(header->big_endian)
+		hexdump_32_packed((const char *)header->file.ptr
+				+ endianless(header->big_endian, section->offset),
+				endianless(header->big_endian, section->size),
+				endianless(header->big_endian, section->addr));
+	else
+		hexdump_32((const char *)header->file.ptr
+				+ endianless(header->big_endian, section->offset),
+				endianless(header->big_endian, section->size),
+				endianless(header->big_endian, section->addr));
 	return (1);
 }
 
@@ -58,7 +68,7 @@ int	print_section(t_abstract_mach *header, const char *section_name)
 		number_of_commands =
 			endianless(header->big_endian, header->header.arch_32->ncmds);
 	if (!build_section_table(header, load, number_of_commands))
-		return (1);
+		return (0);
 	i = 1;
 	while (i <= header->number_of_sections)
 	{
@@ -70,5 +80,5 @@ int	print_section(t_abstract_mach *header, const char *section_name)
 		}
 		++i;
 	}
-	return (0);
+	return (1);
 }

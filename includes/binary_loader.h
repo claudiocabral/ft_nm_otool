@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 13:41:29 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 13:33:27 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:11:26 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,9 @@ int				print_section(t_abstract_mach *header,
 								const char *section_name);
 void			ft_puthex(unsigned char c);
 int				hexdump(const char *buffer, uint64_t size, uint64_t address);
+int				hexdump_32(const char *buffer, uint32_t size,
+											uint32_t address);
+int				hexdump_32_packed(const char *buffer, uint32_t size,
+											uint32_t address);
 
 #endif
