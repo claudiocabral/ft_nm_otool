@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 13:09:16 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 19:33:47 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 11:47:25 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,23 @@ int		nlist_compare(const t_nlist_64 *a, const t_nlist_64 *b,
 {
 	uint32_t	a_offset;
 	uint32_t	b_offset;
+	int			res;
 
 	a_offset = endianless(header->big_endian, a->n_un.n_strx);
 	b_offset = endianless(header->big_endian, b->n_un.n_strx);
-	return (ft_strcmp(
+	res = ft_strcmp_safe(
 				header->string_table + a_offset,
-				header->string_table + b_offset
-			));
+				header->string_table + b_offset,
+				(const char *)header->eof
+			);
+	if (res == 0)
+	{
+		if (header->nlist_size == sizeof(t_nlist))
+			return ((t_nlist *)a->n_value - (t_nlist *)b->n_value);
+		return (a->n_value - b->n_value);
+
+	}
+	return (res);
 }
 
 int		ft_partition(void const **array, int low, int high,

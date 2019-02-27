@@ -6,19 +6,46 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 13:44:00 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 10:33:25 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 11:31:16 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
 
+int	ft_strcmp_safe(const char *s1, const char *s2, const char *eof)
+{
+	while (s1 < eof && s2 < eof && *s1 && *s1 == *s2)
+	{
+
+		++s1;
+		++s2;
+	}
+	if (s1 > eof || s2 > eof)
+		return (0);
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+}
+
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	while (*s1 && *s1 == *s2)
 	{
+
 		++s1;
 		++s2;
 	}
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+}
+
+int	ft_strcmp_s1_check(const char *s1, const char *s2, const char *eof)
+{
+	while (s1 < eof && *s1 && *s1 == *s2)
+	{
+
+		++s1;
+		++s2;
+	}
+	if (s1 >= eof)
+		return (0);
 	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 

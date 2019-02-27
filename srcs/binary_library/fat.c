@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:55:59 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 10:51:34 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 10:58:21 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,6 @@ void	print_architecture(const t_fat_arch *arch, int is_big_endian,
 		printf("%s (for architecture %s):\n", filename, arch_name);
 }
 
-int		nm_body(t_file file, int is_big_endian, t_fat_arch *arch)
-{
-	t_abstract_mach	header;
-
-	if (arch)
-	{
-		print_architecture(arch, is_big_endian, file.name, 1);
-		file.ptr += endianless(is_big_endian, arch->offset);
-		file.size = endianless(is_big_endian, arch->size);
-	}
-	header = choose_type(file);
-	if (!header.file.ptr)
-		return (0);
-	parse(&header);
-	return (1);
-}
-
 int	fat(t_file file, int is_big_endian, t_func f)
 {
 	const t_fat_header	*header;
@@ -58,25 +41,27 @@ int	fat(t_file file, int is_big_endian, t_func f)
 	header = (const t_fat_header *)file.ptr;
 	arch = (void *)header + sizeof(header);
 	if (!is_in_file(header, sizeof(t_fat_header), file))
-		return (0);
+		return (1);
 	size = endianless(is_big_endian, header->nfat_arch);
 	if (!is_in_file(arch, sizeof(t_fat_arch) * size, file))
-		return (0);
+		return (1);
 	i = 0;
 	while (i < size)
 	{
 		if (!(f(file, is_big_endian, arch)))
-			return (0);
+			return (1);
 		++arch;
 		++i;
 	}
-	return (1);
+	return (0);
 }
 
 int		fat_endianless(t_file file, t_func f)
 {
 	uint32_t	magic_number;
 
+	if (file.size < sizeof(int))
+		return (1);
 	magic_number = *(int *)file.ptr;
 	if (magic_number == FAT_CIGAM)
 		return fat(file, 1, f);

@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 13:41:29 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 10:48:36 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 11:32:17 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef int		(*t_func) (t_file file, int is_big_endian, const void *data);
 
 int				fat(t_file file, int is_big_endian, t_func f);
 int				map_file(char const *path, t_file *file);
-void			parse(t_abstract_mach *header);
+int				parse(t_abstract_mach *header);
 t_abstract_mach	choose_type(t_file file);
 void			ft_quicksort(void const **array, int low, int high,
 									const void *data, t_cmpf cmpf);
@@ -86,5 +86,11 @@ char			get_type_symbol(const t_nlist_64 *list,
 int				nm_body(t_file file, int is_big_endian, t_fat_arch *arch);
 int				fat_endianless(t_file file, t_func f);
 int				apply_to_file(const char *filename, t_func f);
+void			print_architecture(const t_fat_arch *arch, int is_big_endian,
+										const char *filename, int skip_line);
+int				ft_strcmp_safe(const char *s1, const char *s2,
+												const char *eof);
+int				ft_strcmp_s1_check(const char *s1, const char *s2,
+													const char *eof);
 
 #endif

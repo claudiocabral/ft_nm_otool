@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:11:30 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 10:36:01 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 11:30:07 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ t_abstract_mach	choose_type(t_file file)
 
 	magic_number = *(int *)file.ptr;
 	header.file.ptr = NULL;
-	header.file.ptr = NULL;
 	if (!file.ptr)
 		return (header);
 	header.big_endian = 0;
@@ -60,6 +59,8 @@ t_abstract_mach	choose_type(t_file file)
 		header.big_endian = 1;
 	}
 	else
-		return (header);
+		header.file.ptr = NULL;
+	if (!is_in_file(header.file.ptr, header.header_size, file))
+		header.file.ptr = NULL;
 	return (header);
 }

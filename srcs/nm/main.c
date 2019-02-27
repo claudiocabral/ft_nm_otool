@@ -6,13 +6,29 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 17:07:21 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 10:49:20 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 11:04:30 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
 #include <sys/mman.h>
 #include <unistd.h>
+
+int		nm_body(t_file file, int is_big_endian, t_fat_arch *arch)
+{
+	t_abstract_mach	header;
+
+	if (arch)
+	{
+		print_architecture(arch, is_big_endian, file.name, 1);
+		file.ptr += endianless(is_big_endian, arch->offset);
+		file.size = endianless(is_big_endian, arch->size);
+	}
+	header = choose_type(file);
+	if (!header.file.ptr)
+		return (0);
+	return (parse(&header));
+}
 
 int	nm(const char *filename)
 {

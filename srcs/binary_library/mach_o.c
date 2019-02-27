@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:12:11 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 10:11:15 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 11:00:36 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ void	print_symtab_command(const t_symtab_command *symbol_table,
 	free(list);
 }
 
-void	parse(t_abstract_mach *header)
+int		parse(t_abstract_mach *header)
 {
 	uint32_t				i;
 	const t_load_command	*load;
 	uint64_t				number_of_commands;
 
 	if (!header)
-		return ;
+		return(0) ;
 	load = (const t_load_command *)(header->file.ptr + header->header_size);
 	if (header->header_size == sizeof(t_mach_header))
 		number_of_commands =
@@ -65,10 +65,12 @@ void	parse(t_abstract_mach *header)
 		number_of_commands =
 			endianless(header->big_endian, header->header.arch_32->ncmds);
 	if (!(build_section_table(header, load, number_of_commands)))
-		return ;
+		return (0);
 	i = 0;
 	while (i < number_of_commands)
 	{
+		if (!is_in_file(load, sizeof(t_load_command), header->file))
+			return (0);
 		if (load->cmd == endianless(header->big_endian, LC_SYMTAB))
 		{
 			print_symtab_command((const t_symtab_command *)load,
@@ -76,8 +78,7 @@ void	parse(t_abstract_mach *header)
 			break ;
 		}
 		load = (void *) load + endianless(header->big_endian, load->cmdsize);
-		if (!is_in_file(load, sizeof(t_load_command), header->file))
-			break ;
 		++i;
 	}
+	return (1);
 }
