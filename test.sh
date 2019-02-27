@@ -14,3 +14,4 @@ test_file ft_nm
 test_file /usr/bin/audiodevice
 test_file ../ft_malloc_tests/ft_malloc/libft_malloc.so
 test_file /bin/bash
+for i in ../corrupted_binaries/* ; do test_file $i > /dev/null ; done
