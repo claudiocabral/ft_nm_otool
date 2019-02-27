@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 12:06:17 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 15:12:09 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 15:54:58 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,29 @@ int	print_section_contents(t_abstract_mach *header, int i)
 	return (print_section_32(header, i));
 }
 
+int	loop_print_section(t_abstract_mach *header, const char *section_name)
+{
+	int	i;
+
+	i = 1;
+	while (i <= header->number_of_sections)
+	{
+		if (ft_strcmp_s1_check(header->sections.arch_64[i]->sectname,
+					section_name, (const char *)header->eof) == 0)
+		{
+			return (print_section_contents(header, i));
+			break ;
+		}
+		++i;
+	}
+	return (0);
+}
+
 int	print_section(t_abstract_mach *header, const char *section_name)
 {
-	int						i;
 	const t_load_command	*load;
 	uint64_t				number_of_commands;
+	int						res;
 
 	load = (const t_load_command *)(header->file.ptr + header->header_size);
 	if (header->header_size == sizeof(t_mach_header))
@@ -69,13 +87,7 @@ int	print_section(t_abstract_mach *header, const char *section_name)
 			endianless(header->big_endian, header->header.arch_32->ncmds);
 	if (!build_section_table(header, load, number_of_commands))
 		return (0);
-	i = 1;
-	while (i <= header->number_of_sections)
-	{
-		if (ft_strcmp_s1_check(header->sections.arch_64[i]->sectname,
-					section_name, (const char *)header->eof) == 0)
-			return (print_section_contents(header, i));
-		++i;
-	}
-	return (1);
+	res = loop_print_section(header, section_name);
+	free(header->sections.arch_64);
+	return (res);
 }
