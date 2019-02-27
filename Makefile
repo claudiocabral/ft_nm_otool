@@ -21,11 +21,14 @@ endif
 
 CFLAGS	:=	$(CFLAGS) -Wextra -Werror -Wall -march=native -Wshadow
 CDEBUG	:=	-g
+PRINTF_PATH := 	ft_printf
 
 
 DEPDIR := .deps
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.dep && touch $@
+
+include $(PRINTF_PATH)/printf.mk
 
 OBJS_NM		=	objs/nm/main.o
 OBJS_OTOOL	=	objs/otool/main.o
@@ -43,7 +46,8 @@ OBJS_LIB	=	objs/binary_library/map_file.o\
 				objs/binary_library/utils.o\
 				objs/binary_library/choose_type.o
 
-INC	=	-Iincludes
+INC	=	-Iincludes \
+		-I$(PRINTF_INCLUDES)
 
 ifeq ($(ASAN), 1)
 	DEBUG := 1
@@ -60,14 +64,19 @@ OS = $(shell uname -s)
 
 all: $(NAME) $(NAME_OTOOL) $(NAME_LIB)
 
+include $(PRINTF_PATH)/printf_rules.mk
 
-$(NAME): $(OBJS_NM) $(NAME_LIB)
-	$(CC) $(CFLAGS) $(OBJS_NM) $(INC) -L. -l$(LIB) -o $@
+$(NAME): $(OBJS_NM) $(NAME_LIB) $(PRINTF)
+	$(CC) $(CFLAGS) $(OBJS_NM) $(INC)\
+		-L. -l$(LIB) -L$(PRINTF_PATH) -lftprintf\
+		-o $@
 
-$(NAME_OTOOL): $(OBJS_OTOOL) $(NAME_LIB)
-	$(CC) $(CFLAGS) $(OBJS_OTOOL) $(INC) -L. -l$(LIB) -o $@
+$(NAME_OTOOL): $(OBJS_OTOOL) $(NAME_LIB) $(PRINTF)
+	$(CC) $(CFLAGS) $(OBJS_OTOOL) $(INC)\
+		-L. -l$(LIB) -L$(PRINTF_PATH) -lftprintf\
+		-o $@
 
-$(NAME_LIB): $(OBJS_LIB)
+$(NAME_LIB): $(OBJS_LIB) $(PRINTF)
 	ar rcs $@ $^
 
 objs/%.o: srcs/%.c $(DEPDIR)/%.dep Makefile
@@ -86,6 +95,7 @@ include $(wildcard $(OBJS_LIB:objs/%.o=$(DEPDIR)/%.dep))
 include $(wildcard $(OBJS_OTOOL:objs/%.o=$(DEPDIR)/%.dep))
 
 fclean: clean
+	$(MAKE) $(PRINTF_FCLEAN)
 ifeq ($(shell [ -e $(NAME) ] && echo 1 || echo 0),1)
 	rm -rf $(NAME)
 endif
@@ -94,6 +104,7 @@ ifeq ($(shell [ -e $(NAME_LIB) ] && echo 1 || echo 0),1)
 endif
 
 clean:
+	$(MAKE) $(PRINTF_CLEAN)
 ifeq ($(shell [ -e $(DEPDIR) ] && echo 1 || echo 0),1)
 	rm -rf $(DEPDIR)
 endif

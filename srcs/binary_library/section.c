@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 12:06:17 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:16:23 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:24:25 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	print_section_32(t_abstract_mach *header, int i)
 	t_section	*section;
 
 	section = header->sections.arch_32[i];
-	printf("Contents of (%s,%s) section\n", section->segname,
+	ft_printf("Contents of (%s,%s) section\n", section->segname,
 			section->sectname);
 	if(header->big_endian)
 		hexdump_32_packed((const char *)header->file.ptr
@@ -37,7 +37,7 @@ int	print_section_64(t_abstract_mach *header, int i)
 	t_section_64	*section;
 
 	section = header->sections.arch_64[i];
-	printf("Contents of (%s,%s) section\n", section->segname,
+	ft_printf("Contents of (%s,%s) section\n", section->segname,
 			section->sectname);
 	if (!is_in_file(header->file.ptr + section->offset, section->size, header->file))
 		return (0);

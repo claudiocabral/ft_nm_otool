@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 13:04:09 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:14:44 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:24:51 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ int		hexdump_32_packed(const char *buffer, uint32_t size, uint32_t address)
 	(void)buffer;
 	while (offset < size)
 	{
-		printf("%08x\t", offset + address);
+		ft_printf("%08x\t", offset + address);
 		i = 0;
 		while (i < 16 && offset + i < size)
 		{
 			ft_puthex(buffer[offset + i]);
 			if (!((i + 1) % 4))
-				printf(" ");
+				ft_printf(" ");
 			++i;
 		}
-		printf("\n");
+		ft_printf("\n");
 		offset += i;
 	}
 	return (1);
@@ -43,15 +43,15 @@ int		hexdump_32(const char *buffer, uint32_t size, uint32_t address)
 	(void)buffer;
 	while (offset < size)
 	{
-		printf("%08x\t", offset + address);
+		ft_printf("%08x\t", offset + address);
 		i = 0;
 		while (i < 16 && offset + i < size)
 		{
 			ft_puthex(buffer[offset + i]);
-			printf(" ");
+			ft_printf(" ");
 			++i;
 		}
-		printf("\n");
+		ft_printf("\n");
 		offset += i;
 	}
 	return (1);
@@ -65,15 +65,15 @@ int		hexdump(const char *buffer, uint64_t size, uint64_t address)
 	(void)buffer;
 	while (offset < size)
 	{
-		printf("%016llx\t", offset + (uint64_t)address);
+		ft_printf("%016llx\t", offset + (uint64_t)address);
 		i = 0;
 		while (i < 16 && offset + i < size)
 		{
 			ft_puthex(buffer[offset + i]);
-			printf(" ");
+			ft_printf(" ");
 			++i;
 		}
-		printf("\n");
+		ft_printf("\n");
 		offset += i;
 	}
 	return (1);

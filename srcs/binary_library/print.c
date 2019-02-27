@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:20:30 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 11:50:53 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:25:05 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ void	print32(const t_nlist *list, t_abstract_mach *header,
 	if (!string_table[offset])
 		return ;
 	if (type == 'U')
-		printf("         %c %s\n",
+		ft_printf("         %c %s\n",
 				type,
 				string_table + offset);
 	else
-		printf("%08x %c %s\n",
+		ft_printf("%08x %c %s\n",
 				endianless(header->big_endian, list->n_value),
 				type,
 				string_table + offset);
@@ -53,11 +53,11 @@ void	print64(const t_nlist_64 *list, t_abstract_mach *header,
 	if (!string_table[list->n_un.n_strx])
 		return ;
 	if (type == 'U')
-		printf("                 %c %s\n",
+		ft_printf("                 %c %s\n",
 				type,
 				string_table + list->n_un.n_strx);
 	else
-		printf("%016llx %c %s\n",
+		ft_printf("%016llx %c %s\n",
 				list->n_value,
 				type,
 				string_table + list->n_un.n_strx);

@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:55:59 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:18:54 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:24:05 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	print_architecture(const t_fat_arch *arch, int is_big_endian,
 	else if (type == CPU_TYPE_I386)
 		arch_name = "i386";
 	if (skip_line)
-		printf("\n%s (for architecture %s):\n", filename, arch_name);
+		ft_printf("\n%s (for architecture %s):\n", filename, arch_name);
 	else
-		printf("%s (architecture %s):\n", filename, arch_name);
+		ft_printf("%s (architecture %s):\n", filename, arch_name);
 }
 
 int	fat(t_file file, int is_big_endian, t_func f)

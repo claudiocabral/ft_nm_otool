@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_put.c                                           :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/27 13:04:50 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:24:56 by ccabral          ###   ########.fr       */
+/*   Created: 2017/11/11 18:20:54 by ccabral           #+#    #+#             */
+/*   Updated: 2017/11/14 16:14:48 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <binary_loader.h>
+#ifndef UTILS_H
+# define UTILS_H
 
-void	ft_puthex(unsigned char c)
-{
-	static char hex_table[16] = "0123456789abcdef";
+# include <string.h>
+# include <wchar.h>
 
-	ft_printf("%c", hex_table[c / 16]);
-	ft_printf("%c", hex_table[c % 16]);
-}
+long				ftprintf_max(long a, long b);
+long				ftprintf_min(long a, long b);
+size_t				ftprintf_strlen(char const *str);
+char				*ftprintf_strdup(char const *src);
+char				*ftprintf_itoa_base(unsigned long value, char const *base);
+
+#endif

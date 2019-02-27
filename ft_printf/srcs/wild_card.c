@@ -1,22 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_put.c                                           :+:      :+:    :+:   */
+/*   wild_card.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/27 13:04:50 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:24:56 by ccabral          ###   ########.fr       */
+/*   Created: 2017/11/13 13:01:35 by ccabral           #+#    #+#             */
+/*   Updated: 2017/11/26 14:55:44 by claudioca        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <binary_loader.h>
+#include "modifiers.h"
 
-void	ft_puthex(unsigned char c)
+char const	*wild_card(char const *format, t_modifiers *modifiers)
 {
-	static char hex_table[16] = "0123456789abcdef";
-
-	ft_printf("%c", hex_table[c / 16]);
-	ft_printf("%c", hex_table[c % 16]);
+	modifiers->field_width = va_arg(modifiers->args, int);
+	return (format);
 }

@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_put.c                                           :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/27 13:04:50 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:24:56 by ccabral          ###   ########.fr       */
+/*   Created: 2017/11/13 13:16:54 by ccabral           #+#    #+#             */
+/*   Updated: 2017/12/02 22:14:45 by claudioca        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <binary_loader.h>
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
-void	ft_puthex(unsigned char c)
-{
-	static char hex_table[16] = "0123456789abcdef";
+# include <stdarg.h>
 
-	ft_printf("%c", hex_table[c / 16]);
-	ft_printf("%c", hex_table[c % 16]);
-}
+int	ft_printf(char const *format, ...);
+int	ft_dprintf(int fd, char const *format, ...);
+
+#endif

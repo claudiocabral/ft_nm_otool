@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_put.c                                           :+:      :+:    :+:   */
+/*   makers.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/27 13:04:50 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:24:56 by ccabral          ###   ########.fr       */
+/*   Created: 2017/11/13 13:18:28 by ccabral           #+#    #+#             */
+/*   Updated: 2017/11/13 13:18:38 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <binary_loader.h>
+#ifndef MAKERS_H
+# define MAKERS_H
 
-void	ft_puthex(unsigned char c)
-{
-	static char hex_table[16] = "0123456789abcdef";
+# include <modifiers.h>
 
-	ft_printf("%c", hex_table[c / 16]);
-	ft_printf("%c", hex_table[c % 16]);
-}
+char	*make_hex_string(unsigned long long value, char const *const hex_set,
+														t_modifiers *modifiers);
+char	*make_octal_string(unsigned long long value, t_modifiers *modifiers);
+char	*make_decimal_string(unsigned long long value, int sign,
+														t_modifiers *modifiers);
+#endif

@@ -1,22 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_put.c                                           :+:      :+:    :+:   */
+/*   ft_itoa_base.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/27 13:04:50 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:24:56 by ccabral          ###   ########.fr       */
+/*   Created: 2017/11/11 18:06:29 by ccabral           #+#    #+#             */
+/*   Updated: 2017/11/26 14:43:33 by claudioca        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <binary_loader.h>
+#include <stdlib.h>
+#include "utils.h"
 
-void	ft_puthex(unsigned char c)
+char	*ftprintf_itoa_base(unsigned long value, char const *base)
 {
-	static char hex_table[16] = "0123456789abcdef";
+	char	tmp[128];
+	int		base_size;
+	int		i;
 
-	ft_printf("%c", hex_table[c / 16]);
-	ft_printf("%c", hex_table[c % 16]);
+	tmp[127] = 0;
+	base_size = ftprintf_strlen(base);
+	i = 126;
+	while (1)
+	{
+		tmp[i] = base[value % base_size];
+		value /= base_size;
+		--i;
+		if (!value)
+			break ;
+	}
+	return (ftprintf_strdup(tmp + i + 1));
 }

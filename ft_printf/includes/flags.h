@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_put.c                                           :+:      :+:    :+:   */
+/*   flags.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/27 13:04:50 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:24:56 by ccabral          ###   ########.fr       */
+/*   Created: 2017/11/13 13:18:06 by ccabral           #+#    #+#             */
+/*   Updated: 2017/11/13 13:18:09 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <binary_loader.h>
+#ifndef FLAGS_H
+# define FLAGS_H
 
-void	ft_puthex(unsigned char c)
-{
-	static char hex_table[16] = "0123456789abcdef";
+char const	*hastag(char const *format, t_modifiers *modifiers);
+char const	*zero(char const *format, t_modifiers *modifiers);
+char const	*minus(char const *format, t_modifiers *modifiers);
+char const	*plus(char const *format, t_modifiers *modifiers);
+char const	*space(char const *format, t_modifiers *modifiers);
 
-	ft_printf("%c", hex_table[c / 16]);
-	ft_printf("%c", hex_table[c % 16]);
-}
+#endif

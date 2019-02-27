@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_put.c                                           :+:      :+:    :+:   */
+/*   print_hex_float.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/27 13:04:50 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:24:56 by ccabral          ###   ########.fr       */
+/*   Created: 2017/11/11 16:36:07 by ccabral           #+#    #+#             */
+/*   Updated: 2017/11/11 16:37:18 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <binary_loader.h>
+#include "modifiers.h"
+#include "printf.h"
 
-void	ft_puthex(unsigned char c)
+char const			*print_big_float_hex(char const *format,
+											t_modifiers *modifiers)
 {
-	static char hex_table[16] = "0123456789abcdef";
+	(void)modifiers;
+	return (format);
+}
 
-	ft_printf("%c", hex_table[c / 16]);
-	ft_printf("%c", hex_table[c % 16]);
+char const			*print_small_float_hex(char const *format,
+											t_modifiers *modifiers)
+{
+	(void)modifiers;
+	return (format);
 }

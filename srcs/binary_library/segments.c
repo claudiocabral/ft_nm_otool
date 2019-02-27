@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:00:57 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 13:53:42 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:24:20 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ uint32_t	print_segment(const t_segment_command_64 *segment)
 	section = (const void *)segment + sizeof(t_segment_command_64);
 	while (i < segment->nsects)
 	{
-		printf("[%u]: %s\n", i, section->sectname);
+		ft_printf("[%u]: %s\n", i, section->sectname);
 		++i;
 		section = (void *)section + section->size;
 	}

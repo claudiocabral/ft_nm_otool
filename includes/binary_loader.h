@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 13:41:29 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:11:26 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:24:17 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include <stdint.h>
 # include <stdlib.h>
-# include <stdio.h>
 # include <mach_types.h>
+# include <ft_printf.h>
 
 # define NOT_FAT -1
 
