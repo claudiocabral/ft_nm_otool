@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function test_nm() {
-	echo testing file $1
+	echo testing file $@
 	diff <(nm $1) <(./ft_nm $1)
 	if [ $? = 0 ]
 	then
@@ -10,7 +10,7 @@ function test_nm() {
 }
 
 function test_otool() {
-	echo testing file $1
+	echo testing file $@
 	diff <(otool -t $1) <(./ft_otool -t $1)
 	if [ $? = 0 ]
 	then
@@ -29,6 +29,7 @@ test_nm ft_nm
 test_nm /usr/bin/audiodevice
 test_nm ../ft_malloc_tests/ft_malloc/libft_malloc.so
 test_nm /bin/bash
+test_nm objs/nm/main.o /bin/bash /objs/nm/main.o
 
 echo TESTING OTOOL
 test_otool objs/nm/main.o
@@ -36,3 +37,4 @@ test_otool ft_nm
 test_otool /usr/bin/audiodevice
 test_otool ../ft_malloc_tests/ft_malloc/libft_malloc.so
 test_otool /bin/bash
+test_otool objs/nm/main.o /bin/bash /objs/nm/main.o
