@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 12:06:17 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:24:25 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 15:12:09 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	print_section_32(t_abstract_mach *header, int i)
 	section = header->sections.arch_32[i];
 	ft_printf("Contents of (%s,%s) section\n", section->segname,
 			section->sectname);
-	if(header->big_endian)
+	if (header->big_endian)
 		hexdump_32_packed((const char *)header->file.ptr
 				+ endianless(header->big_endian, section->offset),
 				endianless(header->big_endian, section->size),
@@ -39,7 +39,8 @@ int	print_section_64(t_abstract_mach *header, int i)
 	section = header->sections.arch_64[i];
 	ft_printf("Contents of (%s,%s) section\n", section->segname,
 			section->sectname);
-	if (!is_in_file(header->file.ptr + section->offset, section->size, header->file))
+	if (!is_in_file(header->file.ptr + section->offset,
+				section->size, header->file))
 		return (0);
 	hexdump((const char *)header->file.ptr + section->offset, section->size,
 			section->addr);
@@ -55,7 +56,6 @@ int	print_section_contents(t_abstract_mach *header, int i)
 
 int	print_section(t_abstract_mach *header, const char *section_name)
 {
-
 	int						i;
 	const t_load_command	*load;
 	uint64_t				number_of_commands;
@@ -74,10 +74,7 @@ int	print_section(t_abstract_mach *header, const char *section_name)
 	{
 		if (ft_strcmp_s1_check(header->sections.arch_64[i]->sectname,
 					section_name, (const char *)header->eof) == 0)
-		{
-			print_section_contents(header, i);
-			break ;
-		}
+			return (print_section_contents(header, i));
 		++i;
 	}
 	return (1);

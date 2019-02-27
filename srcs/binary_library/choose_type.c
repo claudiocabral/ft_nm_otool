@@ -6,13 +6,13 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:11:30 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 11:30:07 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:53:45 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
 
-void	mach_set_32(t_abstract_mach *header)
+void			mach_set_32(t_abstract_mach *header)
 {
 	if (!header)
 		return ;
@@ -24,7 +24,7 @@ void	mach_set_32(t_abstract_mach *header)
 	header->section_size = sizeof(t_section);
 }
 
-void	mach_set_64(t_abstract_mach *header)
+void			mach_set_64(t_abstract_mach *header)
 {
 	if (!header)
 		return ;

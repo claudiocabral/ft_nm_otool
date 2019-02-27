@@ -6,10 +6,9 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:08:52 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:25:58 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 15:37:08 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include <unistd.h>
 #include <binary_loader.h>
@@ -45,7 +44,7 @@ int	otool_error_no_file(void)
 	return (1);
 }
 
-int	main(int argc, char	**argv)
+int	main(int argc, char **argv)
 {
 	int	i;
 	int	tmp;

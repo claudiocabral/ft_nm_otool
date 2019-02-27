@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:20:30 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:25:05 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:55:33 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	print64(const t_nlist_64 *list, t_abstract_mach *header,
 void	print(const t_nlist_64 *list, t_abstract_mach *header,
 		const char *string_table)
 {
-
 	if (header->nlist_size == sizeof(t_nlist))
 		print32((t_nlist *)list, header, string_table);
 	else

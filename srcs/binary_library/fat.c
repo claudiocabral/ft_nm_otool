@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:55:59 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:24:05 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:53:26 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	print_architecture(const t_fat_arch *arch, int is_big_endian,
 {
 	const char	*arch_name;
 	cpu_type_t	type;
-
 
 	type = endianless(is_big_endian, arch->cputype);
 	if (type == CPU_TYPE_POWERPC)
@@ -30,13 +29,12 @@ void	print_architecture(const t_fat_arch *arch, int is_big_endian,
 		ft_printf("%s (architecture %s):\n", filename, arch_name);
 }
 
-int	fat(t_file file, int is_big_endian, t_func f)
+int		fat(t_file file, int is_big_endian, t_func f)
 {
 	const t_fat_header	*header;
 	const t_fat_arch	*arch;
 	uint32_t			i;
 	uint32_t			size;
-
 
 	header = (const t_fat_header *)file.ptr;
 	arch = (void *)header + sizeof(header);
@@ -64,8 +62,8 @@ int		fat_endianless(t_file file, t_func f)
 		return (1);
 	magic_number = *(int *)file.ptr;
 	if (magic_number == FAT_CIGAM)
-		return fat(file, 1, f);
+		return (fat(file, 1, f));
 	else if (magic_number == FAT_MAGIC)
-		return fat(file, 0, f);
+		return (fat(file, 0, f));
 	return (NOT_FAT);
 }

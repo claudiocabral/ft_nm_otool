@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 10:47:57 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 11:39:21 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:52:40 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ char	get_type_symbol(const t_nlist_64 *list, t_abstract_mach *header)
 		symbol = get_symbol_from_section(list, header);
 	else
 		return (' ');
-
-	if  (!(list->n_type & N_EXT))
+	if (!(list->n_type & N_EXT))
 		symbol += 32;
 	return (symbol);
 }

@@ -6,17 +6,16 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 13:44:00 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 11:31:16 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 15:33:31 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
 
-int	ft_strcmp_safe(const char *s1, const char *s2, const char *eof)
+int			ft_strcmp_safe(const char *s1, const char *s2, const char *eof)
 {
 	while (s1 < eof && s2 < eof && *s1 && *s1 == *s2)
 	{
-
 		++s1;
 		++s2;
 	}
@@ -25,22 +24,11 @@ int	ft_strcmp_safe(const char *s1, const char *s2, const char *eof)
 	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	while (*s1 && *s1 == *s2)
-	{
-
-		++s1;
-		++s2;
-	}
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
-}
-
-int	ft_strcmp_s1_check(const char *s1, const char *s2, const char *eof)
+int			ft_strcmp_s1_check(const char *s1, const char *s2,
+												const char *eof)
 {
 	while (s1 < eof && *s1 && *s1 == *s2)
 	{
-
 		++s1;
 		++s2;
 	}
@@ -60,7 +48,7 @@ uint32_t	big_to_little_endian(uint32_t val)
 uint32_t	endianless(int is_big_endian, uint32_t val)
 {
 	if (is_big_endian)
-		return big_to_little_endian(val);
+		return (big_to_little_endian(val));
 	return (val);
 }
 

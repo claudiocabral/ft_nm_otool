@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/10 14:06:20 by ccabral           #+#    #+#             */
-/*   Updated: 2017/11/26 14:51:19 by claudioca        ###   ########.fr       */
+/*   Updated: 2019/02/27 14:27:10 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 # include "modifiers.h"
 # include "percent.h"
-
-# define INT int
 
 t_function		g_functions[127] =
 {

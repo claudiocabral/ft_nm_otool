@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 13:04:09 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:24:51 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:55:23 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int		hexdump_32_packed(const char *buffer, uint32_t size, uint32_t address)
 {
-	int			i = 0;
-	uint32_t	offset = 0;
+	int			i;
+	uint32_t	offset;
 
-	(void)buffer;
+	offset = 0;
 	while (offset < size)
 	{
 		ft_printf("%08x\t", offset + address);
@@ -37,10 +37,10 @@ int		hexdump_32_packed(const char *buffer, uint32_t size, uint32_t address)
 
 int		hexdump_32(const char *buffer, uint32_t size, uint32_t address)
 {
-	int			i = 0;
-	uint32_t	offset = 0;
+	int			i;
+	uint32_t	offset;
 
-	(void)buffer;
+	offset = 0;
 	while (offset < size)
 	{
 		ft_printf("%08x\t", offset + address);
@@ -59,10 +59,10 @@ int		hexdump_32(const char *buffer, uint32_t size, uint32_t address)
 
 int		hexdump(const char *buffer, uint64_t size, uint64_t address)
 {
-	int			i = 0;
-	uint64_t	offset = 0;
+	uint64_t	i;
+	uint64_t	offset;
 
-	(void)buffer;
+	offset = 0;
 	while (offset < size)
 	{
 		ft_printf("%016llx\t", offset + (uint64_t)address);

@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:00:57 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:24:20 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 15:36:50 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 uint32_t	print_segment(const t_segment_command_64 *segment)
 {
-	const struct section_64	*section;
+	const t_section_64	*section;
 	uint32_t			i;
 
 	i = 0;
@@ -41,15 +41,17 @@ uint32_t	get_number_of_sections(const t_load_command *load,
 	{
 		if (!is_in_file(load, sizeof(t_load_command),
 					header->file)
-				|| !is_in_file(load,
-					endianless(header->big_endian, load->cmdsize), header->file))
+				|| !is_in_file(load, endianless(header->big_endian,
+						load->cmdsize), header->file))
 			return (total);
 		cmd = endianless(header->big_endian, load->cmd);
 		if (cmd == LC_SEGMENT_64)
-			total += endianless(header->big_endian, ((t_segment_command_64 *)load)->nsects);
+			total += endianless(header->big_endian,
+					((t_segment_command_64 *)load)->nsects);
 		else if (cmd == LC_SEGMENT)
-			total += endianless(header->big_endian, ((t_segment_command *)load)->nsects);
-		load = (void *) load + endianless(header->big_endian, load->cmdsize);
+			total += endianless(header->big_endian,
+					((t_segment_command *)load)->nsects);
+		load = (void *)load + endianless(header->big_endian, load->cmdsize);
 		++i;
 	}
 	return (total);
@@ -66,7 +68,8 @@ void		collect_sections(uint32_t *section_index, const t_load_command *cmd,
 		n_sects = endianless(header->big_endian,
 				((t_segment_command_64 *)cmd)->nsects);
 	else
-		n_sects = endianless(header->big_endian, ((t_segment_command *)cmd)->nsects);
+		n_sects = endianless(header->big_endian,
+				((t_segment_command *)cmd)->nsects);
 	cmd = (const void *)cmd + header->segment_size;
 	while (i < n_sects)
 	{
@@ -89,26 +92,25 @@ int			build_section_table(t_abstract_mach *header,
 	uint32_t					section_index;
 	uint32_t					cmd;
 
-	if (!(header->number_of_sections
-				= get_number_of_sections(load, number_of_commands, header))
-		|| !(header->sections.arch_64
-				= (t_section_64 **)malloc((header->number_of_sections + 1)
+	if (!(header->number_of_sections =
+				get_number_of_sections(load, number_of_commands, header))
+		|| !(header->sections.arch_64 =
+			(t_section_64 **)malloc((header->number_of_sections + 1)
 					* sizeof(t_section_64 *))))
 		return (0);
 	i = 0;
 	section_index = 1;
-	while (i < number_of_commands)
+	while (i++ < number_of_commands)
 	{
 		if (!is_in_file(load, sizeof(t_load_command), header->file)
-				|| !is_in_file(load, endianless(header->big_endian, load->cmdsize),
-					header->file))
+				|| !is_in_file(load, endianless(header->big_endian,
+						load->cmdsize), header->file))
 			return (1);
 		cmd = endianless(header->big_endian, load->cmd);
 		if (cmd == LC_SEGMENT_64 || cmd == LC_SEGMENT)
 			collect_sections(&section_index, load, header,
 					header->number_of_sections);
-		load = (void *) load + endianless(header->big_endian, load->cmdsize);
-		++i;
+		load = (void *)load + endianless(header->big_endian, load->cmdsize);
 	}
 	return (1);
 }

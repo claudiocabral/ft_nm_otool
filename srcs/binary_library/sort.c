@@ -6,13 +6,13 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 13:09:16 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 11:47:25 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 15:16:45 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
 
-void	ft_swap(void const **a, void const **b)
+void		ft_swap(void const **a, void const **b)
 {
 	const void	*tmp;
 
@@ -23,7 +23,7 @@ void	ft_swap(void const **a, void const **b)
 	*b = tmp;
 }
 
-int		nlist_compare(const t_nlist_64 *a, const t_nlist_64 *b,
+int			nlist_compare(const t_nlist_64 *a, const t_nlist_64 *b,
 		t_abstract_mach *header)
 {
 	uint32_t	a_offset;
@@ -35,29 +35,27 @@ int		nlist_compare(const t_nlist_64 *a, const t_nlist_64 *b,
 	res = ft_strcmp_safe(
 				header->string_table + a_offset,
 				header->string_table + b_offset,
-				(const char *)header->eof
-			);
+				(const char *)header->eof);
 	if (res == 0)
 	{
 		if (header->nlist_size == sizeof(t_nlist))
 			return ((t_nlist *)a->n_value - (t_nlist *)b->n_value);
 		return (a->n_value - b->n_value);
-
 	}
 	return (res);
 }
 
-int		ft_partition(void const **array, int low, int high,
-		const void *data,t_cmpf cmpf)
+static int	ft_partition(void const **array, t_range range,
+		const void *data, t_cmpf cmpf)
 {
 	int			i;
 	int			j;
 	char const	*pivot;
 
-	pivot = array[high];
-	i = low - 1;
-	j = low;
-	while (j < high)
+	pivot = array[range.high];
+	i = range.low - 1;
+	j = range.low;
+	while (j < range.high)
 	{
 		if (cmpf(array[j], (void *)pivot, data) < 0)
 		{
@@ -66,20 +64,26 @@ int		ft_partition(void const **array, int low, int high,
 		}
 		++j;
 	}
-	if (cmpf(array[high], array[i + 1], data) < 0)
-		ft_swap(array + i + 1, array + high);
+	if (cmpf(array[range.high], array[i + 1], data) < 0)
+		ft_swap(array + i + 1, array + range.high);
 	return (i + 1);
 }
 
-void	ft_quicksort(void const **array, int low, int high,
+void		ft_quicksort(void const **array, t_range range,
 		const void *data, t_cmpf cmpf)
 {
-	int	p;
+	int		p;
+	t_range small;
+	t_range big;
 
-	if (low < high)
+	if (range.low < range.high)
 	{
-		p = ft_partition(array, low, high, data, cmpf);
-		ft_quicksort(array, low, p - 1, data, cmpf);
-		ft_quicksort(array, p + 1, high, data, cmpf);
+		p = ft_partition(array, range, data, cmpf);
+		small.low = range.low;
+		small.high = p - 1;
+		big.low = p + 1;
+		big.high = range.high;
+		ft_quicksort(array, small, data, cmpf);
+		ft_quicksort(array, big, data, cmpf);
 	}
 }

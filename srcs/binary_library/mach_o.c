@@ -6,13 +6,38 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:12:11 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 12:08:02 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 15:16:07 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
 
-void	print_symtab_command(const t_symtab_command *symbol_table,
+void		collect_symbols(t_nlist_64 const **list,
+						const t_nlist_64 *symbols,
+						uint32_t number_of_symbols, uint64_t size)
+{
+	uint32_t	i;
+
+	i = 0;
+	while (i < number_of_symbols)
+	{
+		list[i] = (void *)symbols;
+		symbols = (void *)symbols + size;
+		++i;
+	}
+}
+
+static void	sort(t_nlist_64 const **list, uint32_t number_of_symbols,
+					t_abstract_mach *header)
+{
+	t_range	range;
+
+	range.low = 0;
+	range.high = number_of_symbols - 1;
+	ft_quicksort((const void **)list, range, header, (t_cmpf)nlist_compare);
+}
+
+void		print_symtab_command(const t_symtab_command *symbol_table,
 				t_abstract_mach *header)
 {
 	const t_nlist_64	*symbols;
@@ -30,16 +55,9 @@ void	print_symtab_command(const t_symtab_command *symbol_table,
 		return ;
 	if (!(list = (t_nlist_64 const **)malloc(sizeof(t_nlist_64 *)
 					* number_of_symbols)))
-		return;
-	i = 0;
-	while (i < number_of_symbols)
-	{
-		list[i] = (void *)symbols;
-		symbols = (void *)symbols + header->nlist_size;
-		++i;
-	}
-	ft_quicksort((const void **)list, 0,
-			number_of_symbols - 1, header, (t_cmpf)nlist_compare);
+		return ;
+	collect_symbols(list, symbols, number_of_symbols, header->nlist_size);
+	sort(list, number_of_symbols, header);
 	i = 0;
 	while (i < number_of_symbols)
 	{
@@ -49,23 +67,11 @@ void	print_symtab_command(const t_symtab_command *symbol_table,
 	free(list);
 }
 
-int		parse(t_abstract_mach *header)
+int			loop_parse(uint32_t number_of_commands, const t_load_command *load,
+				t_abstract_mach *header)
 {
 	uint32_t				i;
-	const t_load_command	*load;
-	uint64_t				number_of_commands;
 
-	if (!header)
-		return(0) ;
-	load = (const t_load_command *)(header->file.ptr + header->header_size);
-	if (header->header_size == sizeof(t_mach_header))
-		number_of_commands =
-			endianless(header->big_endian, header->header.arch_64->ncmds);
-	else
-		number_of_commands =
-			endianless(header->big_endian, header->header.arch_32->ncmds);
-	if (!(build_section_table(header, load, number_of_commands)))
-		return (0);
 	i = 0;
 	while (i < number_of_commands)
 	{
@@ -77,9 +83,29 @@ int		parse(t_abstract_mach *header)
 					header);
 			break ;
 		}
-		load = (void *) load + endianless(header->big_endian, load->cmdsize);
+		load = (void *)load + endianless(header->big_endian, load->cmdsize);
 		++i;
 	}
+	return (1);
+}
+
+int			parse(t_abstract_mach *header)
+{
+	const t_load_command	*load;
+	uint64_t				number_of_commands;
+
+	if (!header)
+		return (0);
+	load = (const t_load_command *)(header->file.ptr + header->header_size);
+	if (header->header_size == sizeof(t_mach_header))
+		number_of_commands =
+			endianless(header->big_endian, header->header.arch_64->ncmds);
+	else
+		number_of_commands =
+			endianless(header->big_endian, header->header.arch_32->ncmds);
+	if (!(build_section_table(header, load, number_of_commands)))
+		return (0);
 	free(header->sections.arch_64);
+	loop_parse(number_of_commands, load, header);
 	return (1);
 }

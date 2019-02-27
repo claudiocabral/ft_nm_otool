@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 17:07:21 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 12:04:42 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 15:17:00 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int			nm_error_no_file(void)
 	return (1);
 }
 
-int			main(int argc, char	**argv)
+int			main(int argc, char **argv)
 {
 	int	i;
 	int	tmp;

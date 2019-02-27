@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:28:06 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 19:02:49 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 15:02:37 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,48 @@ typedef struct section				t_section;
 typedef struct section_64			t_section_64;
 typedef struct nlist				t_nlist;
 typedef struct nlist_64				t_nlist_64;
+typedef struct						s_file
+{
+	const uint8_t					*ptr;
+	size_t							size;
+	const char						*name;
+}									t_file;
+typedef struct						s_absctract_mach
+{
+	t_file							file;
+	uint64_t						header_size;
+	uint64_t						nlist_size;
+	uint64_t						segment_size;
+	uint64_t						section_size;
+	uint64_t						eof;
+	const char						*string_table;
+	int								big_endian;
+	int								number_of_sections;
+	union							u_header
+	{
+		const t_mach_header			*arch_32;
+		const t_mach_header_64		*arch_64;
+	}								header;
+	union							u_segment
+	{
+		t_segment_command			*arch_32;
+		t_segment_command_64		*arch_64;
+	}								segment;
+	union							u_sections
+	{
+		t_section					**arch_32;
+		t_section_64				**arch_64;
+	}								sections;
+	union							u_nlist
+	{
+		t_nlist						*arch_32;
+		t_nlist_64					*arch_64;
+	}								nlist;
+}									t_abstract_mach;
+typedef struct						s_range
+{
+	int	low;
+	int	high;
+}									t_range;
 
 #endif
