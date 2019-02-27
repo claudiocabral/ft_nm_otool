@@ -6,14 +6,14 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:08:52 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 15:37:08 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 16:15:17 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <binary_loader.h>
 
-int	otool_body(t_file file, int is_big_endian, const t_fat_arch *arch)
+static int	otool_body(t_file file, int is_big_endian, const t_fat_arch *arch)
 {
 	t_abstract_mach	header;
 
@@ -31,12 +31,12 @@ int	otool_body(t_file file, int is_big_endian, const t_fat_arch *arch)
 	return (print_section(&header, "__text"));
 }
 
-int	otool(const char *filename)
+static int	otool(const char *filename, int multiple)
 {
-	return (apply_to_file(filename, otool_body));
+	return (apply_to_file(filename, otool_body, multiple));
 }
 
-int	otool_error_no_file(void)
+static int	otool_error_no_file(void)
 {
 	write(STDERR_FILENO,
 			"error: ft_otool: at least one file must be specified\n",
@@ -44,7 +44,7 @@ int	otool_error_no_file(void)
 	return (1);
 }
 
-int	main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	int	i;
 	int	tmp;
@@ -56,7 +56,7 @@ int	main(int argc, char **argv)
 		return (otool_error_no_file());
 	while (i < argc)
 	{
-		tmp = otool(argv[i]);
+		tmp = otool(argv[i], 0);
 		res = res > tmp ? res : tmp;
 		++i;
 	}

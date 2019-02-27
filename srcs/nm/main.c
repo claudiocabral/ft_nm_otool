@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 17:07:21 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 15:17:00 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 16:12:24 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static int	nm_body(t_file file, int is_big_endian, const t_fat_arch *arch)
 	return (parse(&header));
 }
 
-int			nm(const char *filename)
+int			nm(const char *filename, int multiple)
 {
-	return (apply_to_file(filename, nm_body));
+	return (apply_to_file(filename, nm_body, multiple));
 }
 
 int			nm_error_no_file(void)
@@ -52,10 +52,10 @@ int			main(int argc, char **argv)
 	i = 1;
 	res = 0;
 	if (argc == 1)
-		return (nm("./a.out"));
+		return (nm("./a.out", 0));
 	while (i < argc)
 	{
-		tmp = nm(argv[i]);
+		tmp = nm(argv[i], i > 2);
 		res = res > tmp ? res : tmp;
 		++i;
 	}

@@ -2,7 +2,7 @@
 
 function test_nm() {
 	echo testing file $@
-	diff <(nm $1) <(./ft_nm $1)
+	diff <(nm $@) <(./ft_nm $@)
 	if [ $? = 0 ]
 	then
 		echo OK
@@ -11,7 +11,7 @@ function test_nm() {
 
 function test_otool() {
 	echo testing file $@
-	diff <(otool -t $1) <(./ft_otool -t $1)
+	diff <(otool -t $@) <(./ft_otool -t $@)
 	if [ $? = 0 ]
 	then
 		echo OK
@@ -29,12 +29,13 @@ test_nm ft_nm
 test_nm /usr/bin/audiodevice
 test_nm ../ft_malloc_tests/ft_malloc/libft_malloc.so
 test_nm /bin/bash
-test_nm objs/nm/main.o /bin/bash /objs/nm/main.o
+./ft_nm objs/nm/main.o /bin/bash ./objs/nm/main.o /usr/bin/audiodevice ../ft_malloc_tests/ft_malloc/libft_malloc.so
 
 echo TESTING OTOOL
 test_otool objs/nm/main.o
 test_otool ft_nm
 test_otool /usr/bin/audiodevice
 test_otool ../ft_malloc_tests/ft_malloc/libft_malloc.so
-test_otool /bin/bash
-test_otool objs/nm/main.o /bin/bash /objs/nm/main.o
+# test_otool /bin/bash
+test_otool /usr/bin/python3.4-32
+# test_otool objs/nm/main.o /bin/bash ./objs/nm/main.o /usr/bin/audiodevice ../ft_malloc_tests/ft_malloc/libft_malloc.so /usr/bin/python3.4-32
