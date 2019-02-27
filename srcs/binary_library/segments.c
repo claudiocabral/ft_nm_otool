@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:00:57 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 12:13:57 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 13:53:42 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@ uint32_t	get_number_of_sections(const t_load_command *load,
 	total = 0;
 	while (i < number_of_commands)
 	{
+		if (!is_in_file(load, sizeof(t_load_command),
+					header->file)
+				|| !is_in_file(load,
+					endianless(header->big_endian, load->cmdsize), header->file))
+			return (total);
 		cmd = endianless(header->big_endian, load->cmd);
 		if (cmd == LC_SEGMENT_64)
 			total += endianless(header->big_endian, ((t_segment_command_64 *)load)->nsects);
 		else if (cmd == LC_SEGMENT)
 			total += endianless(header->big_endian, ((t_segment_command *)load)->nsects);
 		load = (void *) load + endianless(header->big_endian, load->cmdsize);
-		if (!is_in_file(load, sizeof(t_load_command),
-					header->file)
-				|| !is_in_file(load,
-					endianless(header->big_endian, load->cmdsize), header->file))
-			return (total);
 		++i;
 	}
 	return (total);
