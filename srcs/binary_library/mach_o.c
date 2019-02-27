@@ -6,13 +6,13 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:12:11 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 15:47:48 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 15:56:50 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
 
-void		collect_symbols(t_nlist_64 const **list,
+static void	collect_symbols(t_nlist_64 const **list,
 						const t_nlist_64 *symbols,
 						uint32_t number_of_symbols, uint64_t size)
 {
@@ -37,7 +37,7 @@ static void	sort(t_nlist_64 const **list, uint32_t number_of_symbols,
 	ft_quicksort((const void **)list, range, header, (t_cmpf)nlist_compare);
 }
 
-void		print_symtab_command(const t_symtab_command *symbol_table,
+static void	print_symtab_command(const t_symtab_command *symbol_table,
 				t_abstract_mach *header)
 {
 	const t_nlist_64	*symbols;
@@ -67,7 +67,7 @@ void		print_symtab_command(const t_symtab_command *symbol_table,
 	free(list);
 }
 
-int			loop_parse(uint32_t number_of_commands, const t_load_command *load,
+static int	loop_parse(uint32_t number_of_commands, const t_load_command *load,
 				t_abstract_mach *header)
 {
 	uint32_t				i;
