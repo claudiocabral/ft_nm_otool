@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/27 12:06:17 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 12:25:37 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 13:48:46 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	print_section_32(t_abstract_mach *header, int i)
 	t_section_64	*section;
 
 	section = header->sections.arch_64[i];
-	printf("Contents of (%s, %s) section\n", section->segname,
+	printf("Contents of (%s,%s) section\n", section->segname,
 			section->sectname);
 	return (1);
 }
@@ -27,8 +27,10 @@ int	print_section_64(t_abstract_mach *header, int i)
 	t_section_64	*section;
 
 	section = header->sections.arch_64[i];
-	printf("Contents of (%s, %s) section\n", section->segname,
+	printf("Contents of (%s,%s) section\n", section->segname,
 			section->sectname);
+	hexdump((const char *)header->file.ptr + section->offset, section->size,
+			section->addr);
 	return (1);
 }
 

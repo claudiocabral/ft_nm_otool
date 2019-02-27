@@ -36,6 +36,8 @@ OBJS_LIB	=	objs/binary_library/map_file.o\
 				objs/binary_library/get_type.o\
 				objs/binary_library/segments.o\
 				objs/binary_library/section.o\
+				objs/binary_library/hexdump.o\
+				objs/binary_library/ft_put.o\
 				objs/binary_library/print.o\
 				objs/binary_library/sort.o\
 				objs/binary_library/utils.o\

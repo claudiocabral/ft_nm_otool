@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:08:52 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 12:24:10 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 13:38:20 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	otool_body(t_file file, int is_big_endian, const t_fat_arch *arch)
 	header = choose_type(file);
 	if (!header.file.ptr)
 		return (0);
+	printf("%s:\n", file.name);
 	return (print_section(&header, "__text"));
 }
 
