@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:12:11 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 15:16:07 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 15:47:48 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int			parse(t_abstract_mach *header)
 			endianless(header->big_endian, header->header.arch_32->ncmds);
 	if (!(build_section_table(header, load, number_of_commands)))
 		return (0);
-	free(header->sections.arch_64);
 	loop_parse(number_of_commands, load, header);
+	free(header->sections.arch_64);
 	return (1);
 }
