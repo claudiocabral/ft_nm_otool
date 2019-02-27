@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 13:44:00 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/23 19:56:38 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 10:33:25 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ uint32_t	endianless(int is_big_endian, uint32_t val)
 	return (val);
 }
 
-int			is_in_file(const void *ptr, size_t size, const void *file,
-													size_t file_size)
+int			is_in_file(const void *ptr, size_t size, t_file file)
 {
-	return (ptr + size < file + file_size && ptr + size > file);
+	return ((const uint8_t *)ptr + size < file.ptr + file.size
+			&& (const uint8_t *)ptr + size > file.ptr);
 }

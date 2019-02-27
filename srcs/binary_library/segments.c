@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:00:57 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/26 13:28:56 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 10:31:34 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ uint32_t	get_number_of_sections(const t_load_command *load,
 			total += endianless(header->big_endian, ((t_segment_command *)load)->nsects);
 		load = (void *) load + endianless(header->big_endian, load->cmdsize);
 		if (!is_in_file(load, sizeof(t_load_command),
-					header->file, header->file_size)
+					header->file)
 				|| !is_in_file(load,
-					endianless(header->big_endian, load->cmdsize), header->file, header->file_size))
+					endianless(header->big_endian, load->cmdsize), header->file))
 			return (total);
 		++i;
 	}
@@ -73,7 +73,7 @@ void		collect_sections(uint32_t *section_index, const t_load_command *cmd,
 		if (*section_index > total_sects)
 			return ;
 		if (!is_in_file(cmd, header->section_size,
-					header->file, header->file_size))
+					header->file))
 			return ;
 		header->sections.arch_64[*section_index] = (t_section_64 *)cmd;
 		*section_index += 1;
@@ -98,10 +98,9 @@ int			build_section_table(t_abstract_mach *header,
 	section_index = 1;
 	while (i < number_of_commands)
 	{
-		if (!is_in_file(load, sizeof(t_load_command),
-					header->file, header->file_size)
+		if (!is_in_file(load, sizeof(t_load_command), header->file)
 				|| !is_in_file(load, endianless(header->big_endian, load->cmdsize),
-					header->file, header->file_size))
+					header->file))
 			return (1);
 		cmd = endianless(header->big_endian, load->cmd);
 		if (cmd == LC_SEGMENT_64 || cmd == LC_SEGMENT)

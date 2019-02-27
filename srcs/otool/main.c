@@ -6,14 +6,24 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:08:52 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/22 11:19:58 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/26 13:42:40 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include <unistd.h>
+#include <binary_loader.h>
 
-int	otool(const char *filename);
+int	otool(const char *filename)
+{
+	t_file	file;
+
+	if (!(map_file(filename, &file)))
+		return (1);
+	choose_type(file.ptr, file.size, filename);
+	munmap((void *)file.ptr, file.size);
+	return (0);
+}
 
 int	otool_error_no_file(void)
 {

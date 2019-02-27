@@ -32,6 +32,7 @@ OBJS_OTOOLS	=	objs/binary_library/map_file.o
 OBJS_LIB	=	objs/binary_library/map_file.o\
 				objs/binary_library/mach_o.o\
 				objs/binary_library/fat.o\
+				objs/binary_library/apply.o\
 				objs/binary_library/get_type.o\
 				objs/binary_library/segments.o\
 				objs/binary_library/print.o\

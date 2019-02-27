@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 16:12:11 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/26 13:15:16 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/27 10:11:15 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	print_symtab_command(const t_symtab_command *symbol_table,
 	uint32_t			i;
 	uint32_t			number_of_symbols;
 
-	header->string_table = header->file
+	header->string_table = (const char *)header->file.ptr
 		+ endianless(header->big_endian, symbol_table->stroff);
-	symbols = (void *)(header->file
+	symbols = (void *)(header->file.ptr
 			+ endianless(header->big_endian, symbol_table->symoff));
 	number_of_symbols = endianless(header->big_endian, symbol_table->nsyms);
 	if ((size_t)header->string_table > header->eof
@@ -57,7 +57,7 @@ void	parse(t_abstract_mach *header)
 
 	if (!header)
 		return ;
-	load = header->file + header->header_size;
+	load = (const t_load_command *)(header->file.ptr + header->header_size);
 	if (header->header_size == sizeof(t_mach_header))
 		number_of_commands =
 			endianless(header->big_endian, header->header.arch_64->ncmds);
@@ -76,8 +76,7 @@ void	parse(t_abstract_mach *header)
 			break ;
 		}
 		load = (void *) load + endianless(header->big_endian, load->cmdsize);
-		if (!is_in_file(load, sizeof(t_load_command), header->file,
-												header->file_size))
+		if (!is_in_file(load, sizeof(t_load_command), header->file))
 			break ;
 		++i;
 	}
