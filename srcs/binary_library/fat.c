@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:55:59 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:53:26 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/28 11:05:25 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ int		fat(t_file file, int is_big_endian, t_func f)
 	if (!is_in_file(arch, sizeof(t_fat_arch) * size, file))
 		return (1);
 	i = 0;
+	if (size == 1)
+	{
+		file.ptr += endianless(is_big_endian, arch->offset);
+		file.size = endianless(is_big_endian, arch->size);
+		return ((f(file, is_big_endian, NULL)));
+	}
 	while (i < size)
 	{
 		if (!(f(file, is_big_endian, arch)))

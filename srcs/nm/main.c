@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 17:07:21 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 16:12:24 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/28 10:55:17 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int			main(int argc, char **argv)
 		return (nm("./a.out", 0));
 	while (i < argc)
 	{
-		tmp = nm(argv[i], i > 2);
+		tmp = nm(argv[i], argc > 2);
 		res = res > tmp ? res : tmp;
 		++i;
 	}
