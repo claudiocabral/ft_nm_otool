@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:55:59 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/28 11:05:25 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/28 11:07:37 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,8 @@ int		fat(t_file file, int is_big_endian, t_func f)
 	}
 	while (i < size)
 	{
-		if (!(f(file, is_big_endian, arch)))
+		if (!(f(file, is_big_endian, arch + i++)))
 			return (1);
-		++arch;
-		++i;
 	}
 	return (0);
 }
