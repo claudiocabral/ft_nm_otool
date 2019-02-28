@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 12:53:03 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 10:04:46 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/02/28 11:12:49 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ int	map_file(char const *path, t_file *file)
 	}
 	file->size = info.st_size;
 	file->name = path;
+	close(fd);
 	return (1);
 }
