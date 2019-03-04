@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 13:09:16 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 15:16:45 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/04 16:10:07 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,18 @@ int			nlist_compare(const t_nlist_64 *a, const t_nlist_64 *b,
 				header->string_table + a_offset,
 				header->string_table + b_offset,
 				(const char *)header->eof);
-	if (res == 0)
+	if (header->nlist_size == sizeof(t_nlist))
 	{
-		if (header->nlist_size == sizeof(t_nlist))
-			return ((t_nlist *)a->n_value - (t_nlist *)b->n_value);
-		return (a->n_value - b->n_value);
+		a_offset = endianless(header->big_endian, ((t_nlist *)a)->n_un.n_strx);
+		b_offset = endianless(header->big_endian, ((t_nlist *)b)->n_un.n_strx);
 	}
+	else
+	{
+		a_offset = endianless(header->big_endian, a->n_value);
+		b_offset = endianless(header->big_endian, b->n_value);
+	}
+	if (res == 0)
+		return (a_offset - b_offset);
 	return (res);
 }
 

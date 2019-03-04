@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:20:30 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 14:55:33 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/04 16:06:43 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	print32(const t_nlist *list, t_abstract_mach *header,
 	type = list->n_type & N_TYPE;
 	offset = endianless(header->big_endian, list->n_un.n_strx);
 	type = get_type_symbol((t_nlist_64 *)list, header);
+	if (type == '-')
+		return ;
 	if (type == 'U' && list->n_value)
 		type = 'C';
 	if ((uint64_t)string_table + offset >= header->eof)
