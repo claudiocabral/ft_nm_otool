@@ -6,11 +6,32 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:55:59 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/28 11:07:37 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/04 15:33:05 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
+
+int		try_native(t_file file, const t_fat_arch *arch,
+			uint32_t size, int is_big_endian, t_func f)
+{
+	uint32_t	i;
+	cpu_type_t	type;
+
+	i = 0;
+	while (i < size)
+	{
+		type = endianless(is_big_endian, arch[i].cputype);
+		if (type == CPU_TYPE_X86_64)
+		{
+			file.ptr += endianless(is_big_endian, arch[i].offset);
+			file.size = endianless(is_big_endian, arch[i].size);
+			return (f(file, is_big_endian, NULL));
+		}
+		++i;
+	}
+	return (0);
+}
 
 void	print_architecture(const t_fat_arch *arch, int is_big_endian,
 		const char *filename, int skip_line)
@@ -43,13 +64,9 @@ int		fat(t_file file, int is_big_endian, t_func f)
 	size = endianless(is_big_endian, header->nfat_arch);
 	if (!is_in_file(arch, sizeof(t_fat_arch) * size, file))
 		return (1);
+	if (try_native(file, arch, size, is_big_endian, f))
+		return (0);
 	i = 0;
-	if (size == 1)
-	{
-		file.ptr += endianless(is_big_endian, arch->offset);
-		file.size = endianless(is_big_endian, arch->size);
-		return ((f(file, is_big_endian, NULL)));
-	}
 	while (i < size)
 	{
 		if (!(f(file, is_big_endian, arch + i++)))
