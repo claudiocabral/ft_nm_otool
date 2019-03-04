@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 17:07:21 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/28 11:01:00 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/04 15:42:20 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,5 @@ int	apply_to_file(const char *filename, t_func f, int multiple)
 		res = f(file, 0, NULL);
 	}
 	munmap((void *)file.ptr, file.size);
-	return (res);
+	return (!res);
 }

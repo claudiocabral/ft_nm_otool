@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:55:59 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/04 15:33:05 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/04 15:51:23 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,19 @@ int		fat(t_file file, int is_big_endian, t_func f)
 	header = (const t_fat_header *)file.ptr;
 	arch = (void *)header + sizeof(header);
 	if (!is_in_file(header, sizeof(t_fat_header), file))
-		return (1);
+		return (0);
 	size = endianless(is_big_endian, header->nfat_arch);
 	if (!is_in_file(arch, sizeof(t_fat_arch) * size, file))
-		return (1);
-	if (try_native(file, arch, size, is_big_endian, f))
 		return (0);
+	if (try_native(file, arch, size, is_big_endian, f))
+		return (1);
 	i = 0;
 	while (i < size)
 	{
 		if (!(f(file, is_big_endian, arch + i++)))
-			return (1);
+			return (0);
 	}
-	return (0);
+	return (1);
 }
 
 int		fat_endianless(t_file file, t_func f)
