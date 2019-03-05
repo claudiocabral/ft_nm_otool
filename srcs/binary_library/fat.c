@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:55:59 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/04 15:51:23 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/05 15:26:27 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,33 @@ int		try_native(t_file file, const t_fat_arch *arch,
 	return (0);
 }
 
+const char	*get_cpu_type(cpu_type_t type)
+{
+	if (type == CPU_TYPE_POWERPC)
+		return ("ppc");
+	else if (type == CPU_TYPE_POWERPC64)
+		return ("ppc64");
+	else if (type == CPU_TYPE_I386)
+		return ("i386");
+	else if (type == CPU_TYPE_MC680x0)
+		return ("mc680x0");
+	else if (type == CPU_TYPE_MC98000)
+		return ("mc98000");
+	else if (type == CPU_TYPE_MC88000)
+		return ("mc88000");
+	else if (type == CPU_TYPE_HPPA)
+		return ("hppa");
+	else if (type == CPU_TYPE_ARM)
+		return ("arm");
+	else if (type == CPU_TYPE_ARM64)
+		return ("arm64");
+	else if (type == CPU_TYPE_SPARC)
+		return ("sparc");
+	else if (type == CPU_TYPE_I860)
+		return ("i860");
+	return ("x86_64");
+}
+
 void	print_architecture(const t_fat_arch *arch, int is_big_endian,
 		const char *filename, int skip_line)
 {
@@ -40,10 +67,7 @@ void	print_architecture(const t_fat_arch *arch, int is_big_endian,
 	cpu_type_t	type;
 
 	type = endianless(is_big_endian, arch->cputype);
-	if (type == CPU_TYPE_POWERPC)
-		arch_name = "ppc";
-	else if (type == CPU_TYPE_I386)
-		arch_name = "i386";
+	arch_name = get_cpu_type(type);
 	if (skip_line)
 		ft_printf("\n%s (for architecture %s):\n", filename, arch_name);
 	else
