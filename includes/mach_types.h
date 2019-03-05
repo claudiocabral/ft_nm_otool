@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:28:06 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 15:02:37 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/05 15:53:38 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,8 @@ typedef struct						s_range
 	int	low;
 	int	high;
 }									t_range;
+typedef struct
+{
+}
 
 #endif
