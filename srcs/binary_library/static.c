@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 15:40:53 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/06 16:37:50 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/06 17:29:45 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	print_lib(t_file archive, t_file object, int is_otools)
 		name_size = ft_natoi((const char *)object.name + 3, 13);
 		object.name += 60;
 	}
-	if (is_otools) 
+	if (is_otools)
 		ft_printf("%s(%s):\n", archive.name, object.name);
 	else
 		ft_printf("\n%s(%s):\n", archive.name, object.name);
@@ -46,7 +46,7 @@ t_file	set_file(t_file file)
 	return (file);
 }
 
-int	handle_static_library(t_file file, t_func f, int is_otools)
+int		handle_static_library(t_file file, t_func f, int is_otools)
 {
 	t_file		new_file;
 	uint32_t	name_size;
@@ -72,7 +72,7 @@ int	handle_static_library(t_file file, t_func f, int is_otools)
 	return (0);
 }
 
-int	parse_static_library(t_file file, t_func f, int is_otools)
+int		parse_static_library(t_file file, t_func f, int is_otools)
 {
 	if (file.size < 68)
 		return (0);

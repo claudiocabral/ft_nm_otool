@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/06 09:57:25 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/06 14:59:50 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/06 17:26:32 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int			ft_strncmp(const char *s1, const char *s2, size_t n)
 int64_t		ft_pow(int64_t base, uint64_t exponent)
 {
 	uint64_t	i;
-	int64_t res;
+	int64_t		res;
 
 	i = 0;
 	res = 1;
@@ -43,7 +43,7 @@ int64_t		ft_pow(int64_t base, uint64_t exponent)
 	return (res);
 }
 
-int32_t	ft_natoi(const char *val, size_t size)
+int32_t		ft_natoi(const char *val, size_t size)
 {
 	size_t	i;
 	int64_t	res;

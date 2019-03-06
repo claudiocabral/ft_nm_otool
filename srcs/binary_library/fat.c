@@ -6,42 +6,19 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:55:59 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/06 16:54:36 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/06 17:50:11 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
 
-int		single_architecture(t_file file, const t_fat_arch *arch,
+int			single_architecture(t_file file, const t_fat_arch *arch,
 									int is_big_endian, t_func f)
 {
 	file.ptr += endianless(is_big_endian, arch->offset);
 	file.size = endianless(is_big_endian, arch->size);
 	ft_printf("%s:\n", file.name);
 	return (f(file, is_big_endian, NULL, 0));
-}
-
-int		try_native(t_file file, const t_fat_arch *arch,
-		uint32_t size, int is_big_endian, t_func f)
-{
-	uint32_t	i;
-	cpu_type_t	type;
-
-	i = 0;
-	if (size == 1)
-		return (single_architecture(file, arch, is_big_endian, f));
-	while (i < size)
-	{
-		type = endianless(is_big_endian, arch[i].cputype);
-		if (type == CPU_TYPE_X86_64)
-		{
-			file.ptr += endianless(is_big_endian, arch[i].offset);
-			file.size = endianless(is_big_endian, arch[i].size);
-			return (f(file, is_big_endian, NULL, 0));
-		}
-		++i;
-	}
-	return (0);
 }
 
 const char	*get_cpu_type(cpu_type_t type)
@@ -71,8 +48,8 @@ const char	*get_cpu_type(cpu_type_t type)
 	return ("x86_64");
 }
 
-void	print_architecture(const t_fat_arch *arch, int is_big_endian,
-		const char *filename, int skip_line)
+void		print_architecture(const t_fat_arch *arch,
+				int is_big_endian, const char *filename, int skip_line)
 {
 	const char	*arch_name;
 	cpu_type_t	type;
@@ -85,7 +62,7 @@ void	print_architecture(const t_fat_arch *arch, int is_big_endian,
 		ft_printf("%s (architecture %s):\n", filename, arch_name);
 }
 
-int		fat(t_file file, int is_big_endian, t_func f)
+int			fat(t_file file, int is_big_endian, t_func f)
 {
 	const t_fat_header	*header;
 	const t_fat_arch	*arch;
@@ -110,7 +87,7 @@ int		fat(t_file file, int is_big_endian, t_func f)
 	return (1);
 }
 
-int		fat_endianless(t_file file, t_func f)
+int			fat_endianless(t_file file, t_func f)
 {
 	uint32_t	magic_number;
 

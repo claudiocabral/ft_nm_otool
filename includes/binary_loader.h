@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 13:41:29 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/06 16:36:01 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/06 17:32:44 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,8 @@ int				hexdump_32(const char *buffer, uint32_t size,
 int				hexdump_32_packed(const char *buffer, uint32_t size,
 											uint32_t address);
 int				parse_static_library(t_file file, t_func f, int is_otools);
-
+int				try_native(t_file file, const t_fat_arch *arch,
+					uint32_t size, int is_big_endian, t_func f);
+int				single_architecture(t_file file, const t_fat_arch *arch,
+									int is_big_endian, t_func f);
 #endif

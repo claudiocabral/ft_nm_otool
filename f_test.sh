@@ -35,10 +35,10 @@ function print_result() {
 
 function check_nm() {
 	$bin_nm_mine $1 2>&- > $output_mine
-	if [ $? -eq 0 ] ; then
+	#if [ $? -eq 0 ] ; then
 		$bin_nm $1 > $output_theirs
 		print_result $1
-	fi
+	#fi
 	rm -rf $output_mine $output_theirs
 }
 
@@ -53,7 +53,7 @@ function check_otool() {
 
 for dir in $dirs; do
 	for file in $dir/* ; do
-		#check_nm $file
-		check_otool $file
+		check_nm $file
+		#check_otool $file
 	done
 done

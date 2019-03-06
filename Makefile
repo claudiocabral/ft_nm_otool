@@ -35,6 +35,7 @@ OBJS_OTOOL	=	objs/otool/main.o
 OBJS_LIB	=	objs/binary_library/map_file.o\
 				objs/binary_library/mach_o.o\
 				objs/binary_library/fat.o\
+				objs/binary_library/native.o\
 				objs/binary_library/static.o\
 				objs/binary_library/apply.o\
 				objs/binary_library/get_type.o\
