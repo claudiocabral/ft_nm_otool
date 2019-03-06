@@ -46,6 +46,7 @@ OBJS_LIB	=	objs/binary_library/map_file.o\
 				objs/binary_library/print.o\
 				objs/binary_library/sort.o\
 				objs/binary_library/utils.o\
+				objs/binary_library/ft_isdigit.o\
 				objs/binary_library/choose_type.o
 
 INC	=	-Iincludes \
