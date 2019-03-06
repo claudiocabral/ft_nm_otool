@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/05 15:40:53 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/06 16:24:33 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/06 16:37:50 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <binary_loader.h>
 #include <unistd.h>
 
-void	print_lib(t_file archive, t_file object)
+void	print_lib(t_file archive, t_file object, int is_otools)
 {
 	uint32_t	name_size;
 
@@ -24,7 +24,10 @@ void	print_lib(t_file archive, t_file object)
 		name_size = ft_natoi((const char *)object.name + 3, 13);
 		object.name += 60;
 	}
-	ft_printf("\n%s(%s):\n", archive.name, object.name);
+	if (is_otools) 
+		ft_printf("%s(%s):\n", archive.name, object.name);
+	else
+		ft_printf("\n%s(%s):\n", archive.name, object.name);
 }
 
 t_file	set_file(t_file file)
@@ -43,7 +46,7 @@ t_file	set_file(t_file file)
 	return (file);
 }
 
-int	handle_static_library(t_file file, t_func f)
+int	handle_static_library(t_file file, t_func f, int is_otools)
 {
 	t_file		new_file;
 	uint32_t	name_size;
@@ -59,8 +62,8 @@ int	handle_static_library(t_file file, t_func f)
 	while (is_in_file(new_file.ptr, new_file.size, file))
 	{
 		new_file = set_file(new_file);
-		print_lib(file, new_file);
-		f(new_file, 0, 0);
+		print_lib(file, new_file, is_otools);
+		f(new_file, 0, 0, 1);
 		new_file.ptr += new_file.size;
 		new_file.size = 60;
 		if (new_file.ptr == file.ptr + file.size)
@@ -69,11 +72,15 @@ int	handle_static_library(t_file file, t_func f)
 	return (0);
 }
 
-int	parse_static_library(t_file file, t_func f)
+int	parse_static_library(t_file file, t_func f, int is_otools)
 {
 	if (file.size < 68)
 		return (0);
 	if (ft_strncmp((const char *)file.ptr, "!<arch>\n", 8) == 0)
-		return (handle_static_library(file, f));
+	{
+		if (is_otools)
+			ft_printf("Archive : %s\n", file.name);
+		return (handle_static_library(file, f, is_otools));
+	}
 	return (NOT_FAT);
 }

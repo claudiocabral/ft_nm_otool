@@ -6,19 +6,30 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:55:59 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/05 15:26:27 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/06 16:54:36 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
 
+int		single_architecture(t_file file, const t_fat_arch *arch,
+									int is_big_endian, t_func f)
+{
+	file.ptr += endianless(is_big_endian, arch->offset);
+	file.size = endianless(is_big_endian, arch->size);
+	ft_printf("%s:\n", file.name);
+	return (f(file, is_big_endian, NULL, 0));
+}
+
 int		try_native(t_file file, const t_fat_arch *arch,
-			uint32_t size, int is_big_endian, t_func f)
+		uint32_t size, int is_big_endian, t_func f)
 {
 	uint32_t	i;
 	cpu_type_t	type;
 
 	i = 0;
+	if (size == 1)
+		return (single_architecture(file, arch, is_big_endian, f));
 	while (i < size)
 	{
 		type = endianless(is_big_endian, arch[i].cputype);
@@ -26,7 +37,7 @@ int		try_native(t_file file, const t_fat_arch *arch,
 		{
 			file.ptr += endianless(is_big_endian, arch[i].offset);
 			file.size = endianless(is_big_endian, arch[i].size);
-			return (f(file, is_big_endian, NULL));
+			return (f(file, is_big_endian, NULL, 0));
 		}
 		++i;
 	}
@@ -93,7 +104,7 @@ int		fat(t_file file, int is_big_endian, t_func f)
 	i = 0;
 	while (i < size)
 	{
-		if (!(f(file, is_big_endian, arch + i++)))
+		if (!(f(file, is_big_endian, arch + i++, 0)))
 			return (0);
 	}
 	return (1);

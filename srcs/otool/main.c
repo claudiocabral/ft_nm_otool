@@ -6,14 +6,15 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 11:08:52 by ccabral           #+#    #+#             */
-/*   Updated: 2019/02/27 16:15:17 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/06 16:35:39 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <binary_loader.h>
 
-static int	otool_body(t_file file, int is_big_endian, const t_fat_arch *arch)
+static int	otool_body(t_file file, int is_big_endian, const t_fat_arch *arch,
+								int static_lib)
 {
 	t_abstract_mach	header;
 
@@ -23,7 +24,7 @@ static int	otool_body(t_file file, int is_big_endian, const t_fat_arch *arch)
 		file.ptr += endianless(is_big_endian, arch->offset);
 		file.size = endianless(is_big_endian, arch->size);
 	}
-	else
+	else if (!static_lib)
 		ft_printf("%s:\n", file.name);
 	header = choose_type(file);
 	if (!header.file.ptr)
@@ -33,7 +34,7 @@ static int	otool_body(t_file file, int is_big_endian, const t_fat_arch *arch)
 
 static int	otool(const char *filename, int multiple)
 {
-	return (apply_to_file(filename, otool_body, multiple));
+	return (apply_to_file(filename, otool_body, multiple, 1));
 }
 
 static int	otool_error_no_file(void)
