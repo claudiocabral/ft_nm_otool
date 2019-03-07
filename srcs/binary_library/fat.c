@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:55:59 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/07 11:24:08 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/07 11:39:22 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int			fat_handler(t_file file, int is_big_endian, int is_otool, t_func f)
 	t_fat				fat;
 	uint32_t			i;
 
+	fat.multiple = 0;
 	fat.header = (const t_fat_header *)file.ptr;
 	fat.arch = (void *)fat.header + sizeof(t_fat_header);
 	fat.is_big_endian = is_big_endian;
@@ -79,6 +80,7 @@ int			fat_handler(t_file file, int is_big_endian, int is_otool, t_func f)
 	if (try_native(&fat, file, f))
 		return (1);
 	i = 0;
+	fat.multiple = 1;
 	while (i < fat.nbr_archs)
 	{
 		print_architecture(fat.arch + i, is_big_endian, file.name, !is_otool);

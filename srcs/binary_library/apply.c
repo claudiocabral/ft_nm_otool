@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 17:07:21 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/07 11:28:07 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/07 11:39:55 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,18 @@ int	apply_to_file(const char *filename, t_func f, int multiple, int is_otool)
 	return (!res);
 }
 
-int	apply_to_lib(t_file file, t_func f, int is_otools)
+int	apply_to_lib(t_file file, t_func f, int is_otools, int multiple)
 {
 	int	res;
 
 	if ((res = parse_static_library(file, f, is_otools)) != NOT_FAT)
 		return (!res);
-	return (f(file,  0, 0, 1));
+	return (f(file,  0, 0, multiple));
 }
 
 int	apply_to_architecture(t_fat *fat, t_file file, int index, t_func f)
 {
 	file.ptr += endianless(fat->is_big_endian, fat->arch[index].offset);
 	file.size = endianless(fat->is_big_endian, fat->arch[index].size);
-	return (apply_to_lib(file, f, fat->is_otool));
+	return (apply_to_lib(file, f, fat->is_otool, fat->multiple));
 }

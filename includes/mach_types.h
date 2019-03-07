@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:28:06 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/07 10:11:42 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/07 11:39:36 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct						s_fat
 	uint32_t				nbr_archs;
 	int						is_big_endian;
 	int						is_otool;
+	int						multiple;
 }									t_fat;
 
 #endif
