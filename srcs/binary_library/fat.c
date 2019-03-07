@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:55:59 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/07 10:27:02 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/07 11:24:08 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int			fat_handler(t_file file, int is_big_endian, int is_otool, t_func f)
 	i = 0;
 	while (i < fat.nbr_archs)
 	{
+		print_architecture(fat.arch + i, is_big_endian, file.name, !is_otool);
 		if (!(apply_to_architecture(&fat, file, i, f)))
 			return (0);
 		++i;

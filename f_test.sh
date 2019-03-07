@@ -12,8 +12,8 @@ bin_otool=otool
 IFS=';'
 
 dirs=(\
-#"/bin;"\
-#"/usr/bin;"\
+"/bin;"\
+"/usr/bin;"\
 "/usr/lib/;"\
 "/Users/ccabral/local/lib" )
 
@@ -35,17 +35,15 @@ function print_result() {
 
 function check_nm() {
 	$bin_nm_mine $1 2>&- > $output_mine
-	#if [ $? -eq 0 ] ; then
-		$bin_nm $1 > $output_theirs
-		print_result $1
-	#fi
+	$bin_nm 2>&- $1 > $output_theirs
+	print_result $1
 	rm -rf $output_mine $output_theirs
 }
 
 function check_otool() {
 	$bin_otool_mine $1 2>&- > $output_mine
 	if [ $? -eq 0 ]; then
-		$bin_otool -t $1 > $output_theirs
+		$bin_otool 2>&- -t $1 > $output_theirs
 		print_result $1
 	fi
 	rm -fr $output_mine $output_theirs
@@ -54,6 +52,6 @@ function check_otool() {
 for dir in $dirs; do
 	for file in $dir/* ; do
 		check_nm $file
-		#check_otool $file
+		check_otool $file
 	done
 done
