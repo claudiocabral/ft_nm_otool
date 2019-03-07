@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:28:06 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/06 13:52:56 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/07 10:11:42 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,13 @@ typedef struct						s_range
 	int	low;
 	int	high;
 }									t_range;
+typedef struct						s_fat
+{
+	const t_fat_arch		*arch;
+	const t_fat_header		*header;
+	uint32_t				nbr_archs;
+	int						is_big_endian;
+	int						is_otool;
+}									t_fat;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:55:59 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/06 17:50:11 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/07 10:27:02 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,32 +62,33 @@ void		print_architecture(const t_fat_arch *arch,
 		ft_printf("%s (architecture %s):\n", filename, arch_name);
 }
 
-int			fat(t_file file, int is_big_endian, t_func f)
+int			fat_handler(t_file file, int is_big_endian, int is_otool, t_func f)
 {
-	const t_fat_header	*header;
-	const t_fat_arch	*arch;
+	t_fat				fat;
 	uint32_t			i;
-	uint32_t			size;
 
-	header = (const t_fat_header *)file.ptr;
-	arch = (void *)header + sizeof(header);
-	if (!is_in_file(header, sizeof(t_fat_header), file))
+	fat.header = (const t_fat_header *)file.ptr;
+	fat.arch = (void *)fat.header + sizeof(t_fat_header);
+	fat.is_big_endian = is_big_endian;
+	fat.is_otool = is_otool;
+	if (!is_in_file(fat.header, sizeof(t_fat_header), file))
 		return (0);
-	size = endianless(is_big_endian, header->nfat_arch);
-	if (!is_in_file(arch, sizeof(t_fat_arch) * size, file))
+	fat.nbr_archs = endianless(is_big_endian, fat.header->nfat_arch);
+	if (!is_in_file(fat.arch, sizeof(t_fat_arch) * fat.nbr_archs, file))
 		return (0);
-	if (try_native(file, arch, size, is_big_endian, f))
+	if (try_native(&fat, file, f))
 		return (1);
 	i = 0;
-	while (i < size)
+	while (i < fat.nbr_archs)
 	{
-		if (!(f(file, is_big_endian, arch + i++, 0)))
+		if (!(apply_to_architecture(&fat, file, i, f)))
 			return (0);
+		++i;
 	}
 	return (1);
 }
 
-int			fat_endianless(t_file file, t_func f)
+int			fat_endianless(t_file file, int is_otool, t_func f)
 {
 	uint32_t	magic_number;
 
@@ -95,8 +96,8 @@ int			fat_endianless(t_file file, t_func f)
 		return (1);
 	magic_number = *(int *)file.ptr;
 	if (magic_number == FAT_CIGAM)
-		return (fat(file, 1, f));
+		return (fat_handler(file, 1, is_otool, f));
 	else if (magic_number == FAT_MAGIC)
-		return (fat(file, 0, f));
+		return (fat_handler(file, 0, is_otool, f));
 	return (NOT_FAT);
 }

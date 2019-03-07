@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 13:41:29 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/06 17:32:44 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/07 10:26:52 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@
 typedef int		(*t_cmpf)(void const *, void const *, void const *);
 typedef int		(*t_func)(t_file file, int is_big_endian,
 									const t_fat_arch *arch, int is_static_lib);
-int				fat(t_file file, int is_big_endian, t_func f);
+int				fat_handler(t_file file, int is_big_endian,
+									int is_otool, t_func f);
 int				map_file(char const *path, t_file *file);
 int				parse(t_abstract_mach *header);
 t_abstract_mach	choose_type(t_file file);
@@ -44,7 +45,7 @@ int				build_section_table(t_abstract_mach *header,
 					const t_load_command *load, uint32_t number_of_commands);
 char			get_type_symbol(const t_nlist_64 *list,
 									t_abstract_mach *header);
-int				fat_endianless(t_file file, t_func f);
+int				fat_endianless(t_file file, int is_otool, t_func f);
 int				apply_to_file(const char *filename, t_func f, int multiple, int is_otools);
 void			print_architecture(const t_fat_arch *arch, int is_big_endian,
 										const char *filename, int skip_line);
@@ -63,8 +64,9 @@ int				hexdump_32(const char *buffer, uint32_t size,
 int				hexdump_32_packed(const char *buffer, uint32_t size,
 											uint32_t address);
 int				parse_static_library(t_file file, t_func f, int is_otools);
-int				try_native(t_file file, const t_fat_arch *arch,
-					uint32_t size, int is_big_endian, t_func f);
+int				try_native(t_fat *fat, t_file file, t_func f);
 int				single_architecture(t_file file, const t_fat_arch *arch,
 									int is_big_endian, t_func f);
+int				apply_to_architecture(t_fat *fat, t_file file,
+											int index, t_func f);
 #endif

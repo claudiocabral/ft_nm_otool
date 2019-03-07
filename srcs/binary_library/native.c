@@ -6,30 +6,25 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 17:27:39 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/06 17:37:22 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/07 10:31:52 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
 
-int		try_native(t_file file, const t_fat_arch *arch,
-				uint32_t size, int is_big_endian, t_func f)
+int		try_native(t_fat *fat, t_file file, t_func f)
 {
 	uint32_t	i;
 	cpu_type_t	type;
 
 	i = 0;
-	if (size == 1)
-		return (single_architecture(file, arch, is_big_endian, f));
-	while (i < size)
+	if (fat->nbr_archs == 1)
+		return (single_architecture(file, fat->arch, fat->is_big_endian, f));
+	while (i < fat->nbr_archs)
 	{
-		type = endianless(1, arch[i].cputype);
+		type = endianless(fat->is_big_endian, fat->arch[i].cputype);
 		if (type == CPU_TYPE_X86_64)
-		{
-			file.ptr += endianless(is_big_endian, arch[i].offset);
-			file.size = endianless(is_big_endian, arch[i].size);
-			return (f(file, is_big_endian, NULL, 0));
-		}
+			return (apply_to_architecture(fat, file, i, f));
 		++i;
 	}
 	return (0);
