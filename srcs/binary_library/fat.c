@@ -6,20 +6,11 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/23 18:55:59 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/08 10:28:13 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/08 12:54:10 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <binary_loader.h>
-
-int			single_architecture(t_file file, const t_fat_arch *arch,
-									int is_big_endian, t_func f)
-{
-	file.ptr += endianless(is_big_endian, arch->offset);
-	file.size = endianless(is_big_endian, arch->size);
-	ft_printf("%s:\n", file.name);
-	return (f(file, is_big_endian, NULL, 0));
-}
 
 const char	*get_cpu_type(cpu_type_t type)
 {
@@ -62,26 +53,33 @@ void		print_architecture(const t_fat_arch *arch,
 		ft_printf("%s (architecture %s):\n", filename, arch_name);
 }
 
+static void	set_fat(t_fat *fat, t_file file, int is_big_endian, int is_otool)
+{
+	if (!fat)
+		return ;
+	fat->multiple = 0;
+	fat->header = (const t_fat_header *)file.ptr;
+	fat->arch = (void *)fat->header + sizeof(t_fat_header);
+	fat->is_big_endian = is_big_endian;
+	fat->is_otool = is_otool;
+}
+
 int			fat_handler(t_file file, int is_big_endian, int is_otool, t_func f)
 {
 	t_fat				fat;
-	uint32_t			i;
+	int					i;
 
-	fat.multiple = 0;
-	fat.header = (const t_fat_header *)file.ptr;
-	fat.arch = (void *)fat.header + sizeof(t_fat_header);
-	fat.is_big_endian = is_big_endian;
-	fat.is_otool = is_otool;
+	set_fat(&fat, file, is_big_endian, is_otool);
 	if (!is_in_file(fat.header, sizeof(t_fat_header), file))
 		return (0);
 	fat.nbr_archs = endianless(is_big_endian, fat.header->nfat_arch);
 	if (!is_in_file(fat.arch, sizeof(t_fat_arch) * fat.nbr_archs, file))
 		return (0);
-	if (try_native(&fat, file, f))
-		return (1);
+	if ((i = try_native(&fat, file, f)) != NOT_FAT)
+		return (i);
 	i = 0;
 	fat.multiple = 1;
-	while (i < fat.nbr_archs)
+	while ((uint32_t)i < fat.nbr_archs)
 	{
 		print_architecture(fat.arch + i, is_big_endian, file.name, !is_otool);
 		if (!(apply_to_architecture(&fat, file, i, f)))

@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 17:07:21 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/08 11:34:41 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/08 12:54:30 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	apply_to_lib(t_file file, t_func f, int is_otools, int multiple)
 
 	if ((res = parse_static_library(file, f, is_otools)) != NOT_FAT)
 		return (!res);
-	return (f(file,  0, 0, multiple));
+	return (f(file, 0, 0, multiple));
 }
 
 int	apply_to_architecture(t_fat *fat, t_file file, int index, t_func f)

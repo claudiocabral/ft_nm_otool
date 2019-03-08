@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 13:41:29 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/07 10:26:52 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/08 12:54:54 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ int				build_section_table(t_abstract_mach *header,
 char			get_type_symbol(const t_nlist_64 *list,
 									t_abstract_mach *header);
 int				fat_endianless(t_file file, int is_otool, t_func f);
-int				apply_to_file(const char *filename, t_func f, int multiple, int is_otools);
+int				apply_to_file(const char *filename, t_func f,
+									int multiple, int is_otools);
 void			print_architecture(const t_fat_arch *arch, int is_big_endian,
 										const char *filename, int skip_line);
 int				ft_strncmp(const char *s1, const char *s2, size_t size);

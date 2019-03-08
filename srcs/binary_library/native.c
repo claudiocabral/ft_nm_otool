@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 17:27:39 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/08 11:03:13 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/08 12:50:02 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ int		try_native(t_fat *fat, t_file file, t_func f)
 			return (apply_to_architecture(fat, file, i, f));
 		++i;
 	}
-	return (0);
+	return (NOT_FAT);
 }
