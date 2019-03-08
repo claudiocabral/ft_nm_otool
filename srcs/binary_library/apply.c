@@ -6,7 +6,7 @@
 /*   By: ccabral <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 17:07:21 by ccabral           #+#    #+#             */
-/*   Updated: 2019/03/08 11:03:39 by ccabral          ###   ########.fr       */
+/*   Updated: 2019/03/08 11:34:41 by ccabral          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	apply_to_file(const char *filename, t_func f, int multiple, int is_otool)
 		munmap((void *)file.ptr, file.size);
 		return (!res);
 	}
-	if ((res = parse_static_library(file, f, is_otool) != NOT_FAT))
+	if ((res = parse_static_library(file, f, is_otool)) != NOT_FAT)
 	{
 		munmap((void *)file.ptr, file.size);
 		return (!res);
