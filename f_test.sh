@@ -15,6 +15,7 @@ dirs=(\
 "/bin;"\
 "/usr/bin;"\
 "/usr/lib/;"\
+"/Users/ccabral/local/bin/;"\
 "/Users/ccabral/local/lib" )
 
 #############
